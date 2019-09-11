@@ -4,4 +4,5 @@ export { MetaformSectionComponent } from "./MetaformSectionComponent";
 export { MetaformRadioFieldComponent } from "./MetaformRadioFieldComponent";
 export { MetaformTextFieldComponent } from "./MetaformTextFieldComponent";
 export { MetaformMemoComponent } from "./MetaformMemoComponent";
+export { MetaformSelectFieldComponent } from "./MetaformSelectFieldComponent";
 export { FieldValue, IconName } from "./types";
