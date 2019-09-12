@@ -1,7 +1,6 @@
 import React from 'react';
 import { MetaformField, MetaformFieldOption } from './models/api';
 import { FieldValue } from './types';
-import { Form, Dropdown, DropdownProps } from "semantic-ui-react";
 
 /**
  * Component props
@@ -35,9 +34,9 @@ export class MetaformSelectFieldComponent extends React.Component<Props, State> 
    */
   constructor(props: Props) {
     super(props);
-
+    const options = (this.props.field.options || []);
     this.state = {
-
+      selectedOption: options[0].name,
     };
   }
 
@@ -45,59 +44,37 @@ export class MetaformSelectFieldComponent extends React.Component<Props, State> 
    * Component render method
    */
   public render() {
-
     if (!this.props.field.name) {
       return null;
     }
 
-    const defaultValue = "Please select an option...";
-    const givenOptions = this.props.field.options || [];
-    const options = givenOptions.map((option) => {
-
-      if (this.state.selectedOption === option.name) {
-        option.selected = true;
-      } else {
-        option.selected = false;
-      }
-      return {
-        key: option.name,
-        text: option.text,
-        value: option.name,
-        selected: option.selected,
-      };
-    }).concat([
-      {
-        key: defaultValue,
-        text: defaultValue,
-        value: defaultValue,
-        selected: false,
-      }
-    ]);
-
+    (this.props.field.options || []).map((option) => {
+      option.selected = this.state.selectedOption === option.name; 
+    });
+    
     return (
       <div>
-        <Form.Field>
-          <Dropdown onChange={ this.onChange } defaultValue={ defaultValue } options={ options } />
-        </Form.Field>
-
+          <select onChange={ this.onChange } value={ this.state.selectedOption } autoFocus={false} >
+            { (this.props.field.options || []).map((option) => <option key={option.name} value={option.name}>{option.text}</option>) }
+          </select>
       </div>
     );
   }
-  
+
   /**
    * Event handler for field input change
    * 
    * @param event event
    */
-  private onChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    const selectedValue = data.value as string;
-    if (data.value) {
+  private onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value as string;
+
+    if (event.target.value) {
       this.setState({
-      selectedOption: selectedValue
+        selectedOption: selectedValue
       });
-    this.props.onValueChange(selectedValue);
+      this.props.onValueChange(selectedValue);
+    }
   }
-  
-}
 
 }
