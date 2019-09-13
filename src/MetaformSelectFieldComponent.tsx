@@ -19,7 +19,7 @@ interface Props {
  * Component state
  */
 interface State {
-  selectedOption?: string;
+  selectedOption: string | undefined;
 }
 
 /**
@@ -36,7 +36,7 @@ export class MetaformSelectFieldComponent extends React.Component<Props, State> 
     super(props);
     const options = (this.props.field.options || []);
     this.state = {
-      selectedOption: options[0].name,
+      selectedOption: options.length > 0 ? options[0].name : undefined,
     };
   }
 
@@ -48,14 +48,10 @@ export class MetaformSelectFieldComponent extends React.Component<Props, State> 
       return null;
     }
 
-    (this.props.field.options || []).map((option) => {
-      option.selected = this.state.selectedOption === option.name; 
-    });
-    
     return (
       <div>
-          <select onChange={ this.onChange } value={ this.state.selectedOption } autoFocus={false} >
-            { (this.props.field.options || []).map((option) => <option key={option.name} value={option.name}>{option.text}</option>) }
+          <select onChange={ this.onChange } value={ this.state.selectedOption } autoFocus={ false } >
+            { (this.props.field.options || []).map((option) => <option key={ option.name } value={ option.name } { ...option.selected = this.state.selectedOption === option.name }>{ option.text }</option>) }
           </select>
       </div>
     );
