@@ -7,6 +7,7 @@ import { MetaformRadioFieldComponent } from './MetaformRadioFieldComponent';
 import { MetaformSubmitFieldComponent } from './MetaformSubmitFieldComponent';
 import { MetaformMemoComponent } from './MetaformMemoComponent';
 import { MetaformSelectFieldComponent } from './MetaformSelectFieldComponent';
+import { MetaformTableFieldComponent } from './MetaformTableFieldComponent';
 
 /**
  * Component props
@@ -93,6 +94,8 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
     switch (this.props.field.type) {
       case MetaformFieldType.Text:
         return <MetaformTextFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+      case MetaformFieldType.Table:
+        return <MetaformTableFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
       case MetaformFieldType.Memo:
         return <MetaformMemoComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
       case MetaformFieldType.Radio:
