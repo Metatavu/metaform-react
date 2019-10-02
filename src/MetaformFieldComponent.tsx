@@ -8,6 +8,14 @@ import { MetaformSubmitFieldComponent } from './MetaformSubmitFieldComponent';
 import { MetaformMemoComponent } from './MetaformMemoComponent';
 import { MetaformSelectFieldComponent } from './MetaformSelectFieldComponent';
 import { MetaformTableFieldComponent } from './MetaformTableFieldComponent';
+import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
+import { MetaformDateTimeFieldComponent } from './MetaformDateTimeFieldComponent'
+import { MetaformFileUploadComponent } from './MetaformFileUploadComponent';
+import { MetaformEmailFieldComponent } from './MetaformEmailFieldComponent';
+import { MetaformUrlFieldComponent } from './MetaformUrlFieldComponent';
+import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent';
+import { MetaformChecklistFieldComponent } from './MetaformChecklistFieldComponent';
+import { MetaformTimeFieldComponent } from './MetaformTimeFieldComponent';
 
 /**
  * Component props
@@ -94,14 +102,30 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
     switch (this.props.field.type) {
       case MetaformFieldType.Text:
         return <MetaformTextFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+      case MetaformFieldType.Number:
+        return <MetaformNumberFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+      case MetaformFieldType.Url:
+        return <MetaformUrlFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+      case MetaformFieldType.Email:
+        return <MetaformEmailFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+      case MetaformFieldType.Files:
+        return <MetaformFileUploadComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } uploadFiles={ this.onUploadFiles }/>
       case MetaformFieldType.Table:
         return <MetaformTableFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+      case MetaformFieldType.Date:
+        return <MetaformDateFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+      case MetaformFieldType.Time:
+        return <MetaformTimeFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+      case MetaformFieldType.DateTime:
+        return <MetaformDateTimeFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
       case MetaformFieldType.Memo:
         return <MetaformMemoComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
       case MetaformFieldType.Radio:
         return <MetaformRadioFieldComponent renderIcon={ this.props.renderIcon } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
       case MetaformFieldType.Select:
         return <MetaformSelectFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+      case MetaformFieldType.Checklist:
+        return <MetaformChecklistFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
       case MetaformFieldType.Submit:
         return <MetaformSubmitFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onClick={ this.props.onSubmit } value={ this.getFieldValue() } />
       default:
@@ -169,5 +193,21 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
     this.setState({
       pristine: false
     });
+  }
+
+  /**
+   * Event handler for files upload
+   */
+  private onUploadFiles = (files: FileList): string | null => {
+    if (!this.props.field.name) {
+      return null;
+    }
+
+    const idString = "_randomIdString_addSupportLater";
+    var filesAsStringArray = Array.from(files).map(file => { return (
+      file.name + idString
+    )})
+
+    return JSON.stringify(filesAsStringArray);
   }
 }
