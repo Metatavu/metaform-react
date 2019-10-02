@@ -54,7 +54,6 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
           <style>
             {"table, th, tr, td{border:1px solid black;}"}
           </style>
-          {/* {this.renderTableData()} */}
           {this.renderHeader()}
           <tbody>
             {this.renderTableData()}
