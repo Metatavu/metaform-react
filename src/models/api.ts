@@ -522,6 +522,7 @@ export enum MetaformFieldType {
     Date = 'date',
     Time = 'time',
     DateTime = 'date-time',
+    File = 'file',
     Files = 'files',
     Table = 'table',
     Logo = 'logo',
