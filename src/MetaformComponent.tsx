@@ -11,6 +11,8 @@ interface Props {
   formReadOnly: boolean,
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
+  uploadFile: (file: File, path: string) => void,
+  setAutocompleteOptions: (path: string) => Promise<string[]>,
   renderIcon: (icon: IconName, key: string) => ReactNode,
   onSubmit: (source: MetaformField) => void
 }
@@ -54,7 +56,7 @@ export class MetaformComponent extends React.Component<Props, State> {
         {
           sections.map((section, i) => {
             const sectionId = `section-${i}`;
-            return ( <MetaformSectionComponent key = {`${this.state.metaformId }-${sectionId}`} renderIcon={ this.props.renderIcon } getFieldValue={ this.props.getFieldValue } setFieldValue={ this.props.setFieldValue } metaformId={ this.state.metaformId } sectionId={ sectionId } formReadOnly={ this.props.formReadOnly } section={ section } onSubmit={ this.props.onSubmit }/> )
+            return ( <MetaformSectionComponent key = {`${this.state.metaformId }-${sectionId}`} setAutocompleteOptions={ this.props.setAutocompleteOptions } uploadFile={ this.props.uploadFile } renderIcon={ this.props.renderIcon } getFieldValue={ this.props.getFieldValue } setFieldValue={ this.props.setFieldValue } metaformId={ this.state.metaformId } sectionId={ sectionId } formReadOnly={ this.props.formReadOnly } section={ section } onSubmit={ this.props.onSubmit }/> )
           })
         }
       </div>

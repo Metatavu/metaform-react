@@ -1,12 +1,19 @@
 import React, { ReactNode } from 'react';
-import { MetaformField, MetaformFieldType } from './models/api';
-import { MetaformTextFieldComponent } from './MetaformTextFieldComponent';
 import { FieldValue, IconName } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
+import { MetaformMemoComponent } from './MetaformMemoComponent';
+import { MetaformField, MetaformFieldType } from './models/api';
+import { MetaformTextFieldComponent } from './MetaformTextFieldComponent';
 import { MetaformRadioFieldComponent } from './MetaformRadioFieldComponent';
 import { MetaformSubmitFieldComponent } from './MetaformSubmitFieldComponent';
-import { MetaformMemoComponent } from './MetaformMemoComponent';
 import { MetaformSelectFieldComponent } from './MetaformSelectFieldComponent';
+import { MetaformBooleanFieldComponent } from './MetaformBooleanFieldComponent';
+import { MetaformHtmlComponent } from './MetaformHtmlComponent';
+import { MetaformEmailFieldComponent } from './MetaformEmailComponent';
+import { MetaformUrlFieldComponent } from './MetaformUrlField';
+import { MetaformAutocompleteFieldComponent } from './MetaformAutocompleteField';
+import { MetaformHiddenFieldComponent } from './MetaformHiddenFieldComponent';
+import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
 
 /**
  * Component props
@@ -17,6 +24,8 @@ interface Props {
   field: MetaformField,
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
+  uploadFile: (file: File, path: string) => void,
+  setAutocompleteOptions: (path: string) => Promise<string[]>,
   renderIcon: (icon: IconName, key: string) => ReactNode,
   onSubmit: (source: MetaformField) => void
 }
@@ -92,15 +101,29 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
   private renderInput = () => {
     switch (this.props.field.type) {
       case MetaformFieldType.Text:
-        return <MetaformTextFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+        return <MetaformTextFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
       case MetaformFieldType.Memo:
-        return <MetaformMemoComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+        return <MetaformMemoComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
       case MetaformFieldType.Radio:
-        return <MetaformRadioFieldComponent renderIcon={ this.props.renderIcon } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+        return <MetaformRadioFieldComponent renderIcon={ this.props.renderIcon } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
       case MetaformFieldType.Select:
-        return <MetaformSelectFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus }/>
+        return <MetaformSelectFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
       case MetaformFieldType.Submit:
-        return <MetaformSubmitFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onClick={ this.props.onSubmit } value={ this.getFieldValue() } />
+        return <MetaformSubmitFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onClick={ this.props.onSubmit } value={ this.getFieldValue() } />;
+      case MetaformFieldType.Boolean:
+        return <MetaformBooleanFieldComponent renderIcon={ this.props.renderIcon }  formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+      case MetaformFieldType.Html:
+        return <MetaformHtmlComponent fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } />;
+      case MetaformFieldType.Email:
+        return <MetaformEmailFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+      case MetaformFieldType.Url:
+        return <MetaformUrlFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+      case MetaformFieldType.Autocomplete:
+        return <MetaformAutocompleteFieldComponent setAutocompleteOptions={ this.props.setAutocompleteOptions } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+      case MetaformFieldType.Hidden:
+        return <MetaformHiddenFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+      case MetaformFieldType.Files:
+        return <MetaformFilesFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onFileUpload={ this.onFileUpload } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
       default:
         return <div style={{ color: "red" }}> Unknown field type { this.props.field.type } </div>
     }
@@ -157,6 +180,31 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
     }
 
     this.props.setFieldValue(this.props.field.name, value);
+  }
+
+  /**
+   * Event handler for file upload
+   * 
+   * @param files file list
+   * @param path string
+   * @param maxFileSize number
+   * @param uploadSingle boolean
+   */
+  private onFileUpload = (files: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => {
+    if (uploadSingle) {
+      const file = files[0];
+      if (maxFileSize && file.size > maxFileSize) {
+        throw new Error(`Couldn't upload the file because it exceeded the maximum file size of ${ maxFileSize }`);
+      }
+      return this.props.uploadFile(file, path);
+    } else {
+      for (let i = 0; i < files.length; i++) {
+        if (maxFileSize && files[i].size > maxFileSize) {
+          throw new Error(`Couldn't upload the files because one of them exceeded the maximum file size of ${ maxFileSize }`);
+        }
+        this.props.uploadFile(files[i], path);
+      }
+    }
   }
 
   /**
