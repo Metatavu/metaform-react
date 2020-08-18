@@ -14,7 +14,9 @@ interface Props {
   sectionId: string,
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
-  uploadFile: (file: File, path: string) => void,
+  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
+  datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
+  uploadFile: (fieldName: string, file: FileList | File, path: string) => void,
   setAutocompleteOptions: (path: string) => Promise<string[]>,
   renderIcon: (icon: IconName, key: string) => ReactNode,
   onSubmit: (source: MetaformField) => void
@@ -74,7 +76,7 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
       <fieldset>
         {
           (this.props.section.fields || []).map((field, i) => {
-            return <MetaformFieldComponent key={ `${this.props.metaformId}-${this.props.sectionId}-field-${i}`  } setAutocompleteOptions={ this.props.setAutocompleteOptions } uploadFile={ this.props.uploadFile } renderIcon={ this.props.renderIcon } getFieldValue={ this.props.getFieldValue } setFieldValue={ this.props.setFieldValue } formReadOnly={ this.props.formReadOnly } field={ field } metaformId={ this.props.metaformId } onSubmit={ this.props.onSubmit }/>
+            return <MetaformFieldComponent key={ `${this.props.metaformId}-${this.props.sectionId}-field-${i}` } datePicker={ this.props.datePicker } datetimePicker={ this.props.datetimePicker } setAutocompleteOptions={ this.props.setAutocompleteOptions } uploadFile={ this.props.uploadFile } renderIcon={ this.props.renderIcon } getFieldValue={ this.props.getFieldValue } setFieldValue={ this.props.setFieldValue } formReadOnly={ this.props.formReadOnly } field={ field } metaformId={ this.props.metaformId } onSubmit={ this.props.onSubmit }/>
           })
         }
       </fieldset>

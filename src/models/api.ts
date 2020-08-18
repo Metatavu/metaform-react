@@ -754,13 +754,13 @@ export interface MetaformVisibleIf {
      * @type {string}
      * @memberof MetaformVisibleIf
      */
-    equals?: string;
+    equals?: boolean;
     /**
      * Value must be not equal to this value.
      * @type {string}
      * @memberof MetaformVisibleIf
      */
-    notEquals?: string;
+    "not-equals"?: boolean;
     /**
      * 
      * @type {Array<MetaformVisibleIf>}

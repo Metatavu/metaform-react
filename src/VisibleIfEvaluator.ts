@@ -23,11 +23,11 @@ class VisibileIfEvaluator {
     const field = visibleIf.field;
 
     if (field && visibleIf.equals) {
-      result = visibleIf.equals === getFieldValue(field);
+      result = visibleIf.equals === (getFieldValue(field) ? true : false);
     }
 
-    if (!result && field && visibleIf.notEquals) {
-      result = visibleIf.equals !== getFieldValue(field);
+    if (!result && field && visibleIf["not-equals"]) {
+      result = visibleIf["not-equals"] !== (getFieldValue(field) ? true : false);
     }
 
     const ands = visibleIf.and || [];

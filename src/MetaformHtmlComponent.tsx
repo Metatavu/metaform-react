@@ -1,5 +1,6 @@
 import React from 'react';
 import { MetaformField } from './models/api';
+import { FieldValue } from './types';
 
 /**
  * Component props
@@ -8,6 +9,7 @@ interface Props {
   field: MetaformField,
   fieldId: string,
   fieldLabelId: string,
+  getFieldValue: (fieldName: string) => FieldValue,
 }
 
 /**
