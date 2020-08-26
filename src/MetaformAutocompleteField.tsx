@@ -4,6 +4,14 @@ import { FieldValue } from './types';
 import { isNull } from 'util';
 
 /**
+ * Interface describing autocomplete item
+ */
+export interface MetaformAutocompleteItem {
+  name: string;
+  value: string;
+}
+
+/**
  * Component props
  */
 interface Props {
@@ -13,7 +21,7 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange: (value: FieldValue) => void,
-  setAutocompleteOptions: (path: string) => Promise<string[]>,
+  setAutocompleteOptions: (path: string) => Promise<string[] | MetaformAutocompleteItem[]>,
   onFocus: () => void
 }
 
@@ -21,7 +29,7 @@ interface Props {
  * Component state
  */
 interface State {
-  matchedItems: string[];
+  matchedItems: MetaformAutocompleteItem[];
 }
 
 /**
@@ -80,7 +88,7 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
       <ul style={{ overflow: "hidden", whiteSpace: "nowrap", padding: 0, margin: 0, listStyleType: "none", textAlign: "left", textOverflow: "ellipsis", display: matchedItems.length > 0 ? "block" : "none", position: "absolute", backgroundColor: "#fff", border: "1px solid #000", zIndex: 99, top: "100%", left: 0, right: 0 }}>
         {
           matchedItems.map(item => {
-            return <li style={{ paddingLeft: 5, paddingRight: 5, cursor: "pointer" }} onClick={ this.chooseItem(item) }>{ item }</li>
+            return <li style={{ paddingLeft: 5, paddingRight: 5, cursor: "pointer" }} onClick={ this.chooseItem(item.value) }>{ item.name }</li>
           })
         }
       </ul>
@@ -110,9 +118,15 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
     }
     const itemsPromise = this.props.setAutocompleteOptions(this.props.field.sourceUrl);
     itemsPromise.then(items => {
-      if (input) {
-        const matchedItems = items.filter(item => {
-          return !isNull(item.match(input)) && item !== input;
+      if (input && items.length > 0) {
+        const normalizedItems: MetaformAutocompleteItem[] = (items as any).map((item: string | MetaformAutocompleteItem) => {
+          if (typeof item == "string") {
+            return { name: item, value: item };
+          }
+          return item;
+        });
+        const matchedItems = normalizedItems.filter(item => {
+          return !isNull(item.name.match(input)) && item.name !== input;
         }).map(item => {
           return item;
         });
