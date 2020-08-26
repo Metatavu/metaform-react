@@ -16,7 +16,7 @@
     "typescript": "3.5.3"
   },
   "scripts": {
-    "build": "tsc --outDir ../mantyharju/themes/mantyharju-wp-theme/src/metaform"
+    "build": "tsc --outDir dist/"
   },
   "eslintConfig": {
     "extends": "react-app"
