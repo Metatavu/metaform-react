@@ -12,6 +12,7 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange: (value: FieldValue) => void,
+  getFieldValue: (fieldName: string) => FieldValue,
   onFocus: () => void
 }
 
@@ -36,7 +37,7 @@ export class MetaformMemoComponent extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-     
+    
     };
   }
 

@@ -14,6 +14,8 @@ import { MetaformUrlFieldComponent } from './MetaformUrlField';
 import { MetaformAutocompleteFieldComponent } from './MetaformAutocompleteField';
 import { MetaformHiddenFieldComponent } from './MetaformHiddenFieldComponent';
 import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
+import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
+import { MetaformDateTimeFieldComponent } from './MetaformDateTimeFieldComponent';
 
 /**
  * Component props
@@ -24,7 +26,9 @@ interface Props {
   field: MetaformField,
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
-  uploadFile: (file: File, path: string) => void,
+  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
+  datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
+  uploadFile: (fieldName: string, file: FileList | File, path: string) => void,
   setAutocompleteOptions: (path: string) => Promise<string[]>,
   renderIcon: (icon: IconName, key: string) => ReactNode,
   onSubmit: (source: MetaformField) => void
@@ -101,9 +105,9 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
   private renderInput = () => {
     switch (this.props.field.type) {
       case MetaformFieldType.Text:
-        return <MetaformTextFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+        return <MetaformTextFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } getFieldValue={ this.getFieldValue } />;
       case MetaformFieldType.Memo:
-        return <MetaformMemoComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+        return <MetaformMemoComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } getFieldValue={ this.getFieldValue } />;
       case MetaformFieldType.Radio:
         return <MetaformRadioFieldComponent renderIcon={ this.props.renderIcon } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
       case MetaformFieldType.Select:
@@ -113,7 +117,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
       case MetaformFieldType.Boolean:
         return <MetaformBooleanFieldComponent renderIcon={ this.props.renderIcon }  formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
       case MetaformFieldType.Html:
-        return <MetaformHtmlComponent fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } />;
+        return <MetaformHtmlComponent fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } getFieldValue={ this.getFieldValue } />;
       case MetaformFieldType.Email:
         return <MetaformEmailFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
       case MetaformFieldType.Url:
@@ -124,8 +128,12 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
         return <MetaformHiddenFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
       case MetaformFieldType.Files:
         return <MetaformFilesFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onFileUpload={ this.onFileUpload } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+      case MetaformFieldType.Date:
+        return <MetaformDateFieldComponent datePicker={ this.props.datePicker } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } getFieldValue={ this.getFieldValue } />;
+      case MetaformFieldType.DateTime:
+        return <MetaformDateTimeFieldComponent datetimePicker={ this.props.datetimePicker } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } getFieldValue={ this.getFieldValue } />;
       default:
-        return <div style={{ color: "red" }}> Unknown field type { this.props.field.type } </div>
+        return <div style={{ color: "red" }}> Unknown field type { this.props.field.type } </div>;
     }
   }
 
@@ -190,22 +198,23 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * @param maxFileSize number
    * @param uploadSingle boolean
    */
-  private onFileUpload = (files: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => {
+  private onFileUpload = (fieldName: string, files: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => {
     if (uploadSingle) {
       const file = files[0];
       if (maxFileSize && file.size > maxFileSize) {
         throw new Error(`Couldn't upload the file because it exceeded the maximum file size of ${ maxFileSize }`);
       }
-      return this.props.uploadFile(file, path);
+      return this.props.uploadFile(fieldName, file, path);
     } else {
       for (let i = 0; i < files.length; i++) {
         if (maxFileSize && files[i].size > maxFileSize) {
           throw new Error(`Couldn't upload the files because one of them exceeded the maximum file size of ${ maxFileSize }`);
         }
-        this.props.uploadFile(files[i], path);
       }
+      this.props.uploadFile(fieldName, files, path);
     }
   }
+
 
   /**
    * Event handler for field value change

@@ -13,6 +13,7 @@ interface Props {
   value: FieldValue,
   getFieldValue: (fieldName: string) => FieldValue,
   onValueChange: (value: FieldValue) => void,
+  datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
   onFocus: () => void
 }
 
@@ -26,7 +27,7 @@ interface State {
 /**
  * Component for Metaform text field
  */
-export class MetaformTextFieldComponent extends React.Component<Props, State> {
+export class MetaformDateTimeFieldComponent extends React.Component<Props, State> {
 
   /**
    * Constructor
@@ -49,21 +50,7 @@ export class MetaformTextFieldComponent extends React.Component<Props, State> {
       return null;
     }
 
-    return (
-      <input 
-        type="text"
-        placeholder={ this.props.field.placeholder }
-        id={ this.props.fieldId }  
-        aria-labelledby={ this.props.fieldLabelId } 
-        name={ this.props.field.name }
-        title={ this.props.field.title }
-        required={ this.props.field.required }
-        readOnly={ this.props.formReadOnly || this.props.field.readonly }
-        value={ this.props.value || "" }
-        onChange={ this.onChange }
-        onFocus={ this.props.onFocus }
-      />
-    );
+    return this.props.datetimePicker(this.props.field.name || "", this.onChange);
   }
   
   /**
@@ -71,8 +58,8 @@ export class MetaformTextFieldComponent extends React.Component<Props, State> {
    * 
    * @param event event
    */
-  private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onValueChange(event.target.value);
+  private onChange = (date: Date) => {
+    this.props.onValueChange(date.getTime());
   }
 
 }

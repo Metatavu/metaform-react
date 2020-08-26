@@ -12,7 +12,7 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange: (value: FieldValue) => void,
-  onFileUpload: (file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
+  onFileUpload: (fieldName: string, file: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => void,
   onFocus: () => void
 }
 
@@ -73,7 +73,7 @@ export class MetaformFilesFieldComponent extends React.Component<Props, State> {
    */
   private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && this.props.field.uploadUrl) {
-      this.props.onFileUpload(event.target.files, this.props.field.uploadUrl, this.props.field.maxFileSize, this.props.field.singleFile);
+      this.props.onFileUpload(this.props.field.name || "", event.target.files, this.props.field.uploadUrl, this.props.field.maxFileSize, this.props.field.singleFile);
     } else {
       this.props.onValueChange(event.target.value);
     }
