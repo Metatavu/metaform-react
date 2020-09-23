@@ -9,6 +9,7 @@ import { FieldValue, IconName } from './types';
 interface Props {
   form: Metaform,
   formReadOnly: boolean,
+  contexts?: string[],
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
@@ -58,7 +59,23 @@ export class MetaformComponent extends React.Component<Props, State> {
         {
           sections.map((section, i) => {
             const sectionId = `section-${i}`;
-            return ( <MetaformSectionComponent key = {`${this.state.metaformId }-${sectionId}`} datePicker={ this.props.datePicker } datetimePicker={ this.props.datetimePicker } setAutocompleteOptions={ this.props.setAutocompleteOptions } uploadFile={ this.props.uploadFile } renderIcon={ this.props.renderIcon } getFieldValue={ this.props.getFieldValue } setFieldValue={ this.props.setFieldValue } metaformId={ this.state.metaformId } sectionId={ sectionId } formReadOnly={ this.props.formReadOnly } section={ section } onSubmit={ this.props.onSubmit }/> )
+
+            return ( 
+              <MetaformSectionComponent 
+                key = {`${this.state.metaformId }-${sectionId}`} 
+                datePicker={ this.props.datePicker } 
+                datetimePicker={ this.props.datetimePicker } 
+                setAutocompleteOptions={ this.props.setAutocompleteOptions } 
+                uploadFile={ this.props.uploadFile }
+                renderIcon={ this.props.renderIcon } 
+                getFieldValue={ this.props.getFieldValue } 
+                setFieldValue={ this.props.setFieldValue } 
+                metaformId={ this.state.metaformId } 
+                sectionId={ sectionId } 
+                formReadOnly={ this.props.formReadOnly } 
+                section={ section } 
+                contexts={ this.props.contexts }
+                onSubmit={ this.props.onSubmit }/> )
           })
         }
       </div>

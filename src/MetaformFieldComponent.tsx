@@ -24,6 +24,7 @@ interface Props {
   formReadOnly: boolean,
   metaformId: string,
   field: MetaformField,
+  contexts?: string[],
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
@@ -63,6 +64,10 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * Component render method
    */
   public render() {
+    if (!this.isEnabledContext()) {
+      return null;
+    }
+
     if (!VisibileIfEvaluator.isVisible(this.props.field["visible-if"], this.props.getFieldValue)) {
       return null;
     }
@@ -177,6 +182,22 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
     }
 
     return this.props.getFieldValue( this.props.field.name );
+  }
+
+  /**
+   * Returns whether field context is within enabled contexts
+   * 
+   * @returns whether field context is within enabled contexts
+   */
+  private isEnabledContext = () => {
+    const fieldContexts = this.props.field.contexts || [];
+    const enabledContexts = this.props.contexts || [];
+
+    if (enabledContexts.length === 0 || fieldContexts.length === 0) {
+      return true;
+    }
+
+    return !!enabledContexts.find(context => fieldContexts.includes(context));
   }
 
   /**
