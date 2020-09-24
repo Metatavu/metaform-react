@@ -1,4 +1,4 @@
-import { MetaformVisibleIf } from "./models/api";
+import { MetaformVisibleIf } from './generated/client/models';
 import { FieldValue } from './types';
 
 /**
@@ -23,11 +23,15 @@ class VisibileIfEvaluator {
     const field = visibleIf.field;
 
     if (field && visibleIf.equals) {
-      result = visibleIf.equals === (getFieldValue(field) ? true : false);
+      const equals = visibleIf.equals as FieldValue; 
+      const fieldValue = getFieldValue(field);
+      result = equals === fieldValue;
     }
 
-    if (!result && field && visibleIf["not-equals"]) {
-      result = visibleIf["not-equals"] !== (getFieldValue(field) ? true : false);
+    if (!result && field && visibleIf.notEquals) {
+      const notEquals = visibleIf.notEquals as FieldValue; 
+      const fieldValue = getFieldValue(field);
+      result = notEquals !== fieldValue;
     }
 
     const ands = visibleIf.and || [];

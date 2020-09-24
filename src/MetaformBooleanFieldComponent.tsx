@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { MetaformField } from './models/api';
+import { MetaformField } from './generated/client/models';
 import { FieldValue, IconName } from './types';
 
 /**

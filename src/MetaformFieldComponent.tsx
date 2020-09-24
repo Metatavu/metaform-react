@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { FieldValue, IconName } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import { MetaformMemoComponent } from './MetaformMemoComponent';
-import { MetaformField, MetaformFieldType } from './models/api';
+import { MetaformField, MetaformFieldType } from './generated/client/models';
 import { MetaformTextFieldComponent } from './MetaformTextFieldComponent';
 import { MetaformRadioFieldComponent } from './MetaformRadioFieldComponent';
 import { MetaformSubmitFieldComponent } from './MetaformSubmitFieldComponent';
@@ -68,7 +68,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
       return null;
     }
 
-    if (!VisibileIfEvaluator.isVisible(this.props.field["visible-if"], this.props.getFieldValue)) {
+    if (!VisibileIfEvaluator.isVisible(this.props.field.visibleIf, this.props.getFieldValue)) {
       return null;
     }
 

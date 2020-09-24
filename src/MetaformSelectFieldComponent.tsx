@@ -1,5 +1,5 @@
 import React from 'react';
-import { MetaformField, MetaformFieldOption } from './models/api';
+import { MetaformField } from './generated/client/models';
 import { FieldValue } from './types';
 
 /**

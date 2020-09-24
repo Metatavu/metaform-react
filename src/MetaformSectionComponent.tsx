@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { MetaformSection, MetaformField } from './models/api';
+import { MetaformSection, MetaformField } from './generated/client/models';
 import { MetaformFieldComponent } from './MetaformFieldComponent';
 import { FieldValue, IconName } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
@@ -52,7 +52,7 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
    * Component render method
    */
   public render() {
-    if (!VisibileIfEvaluator.isVisible(this.props.section["visible-if"], this.props.getFieldValue)) {
+    if (!VisibileIfEvaluator.isVisible(this.props.section.visibleIf, this.props.getFieldValue)) {
       return null;
     }
 
