@@ -11,7 +11,7 @@ import { MetaformBooleanFieldComponent } from './MetaformBooleanFieldComponent';
 import { MetaformHtmlComponent } from './MetaformHtmlComponent';
 import { MetaformEmailFieldComponent } from './MetaformEmailComponent';
 import { MetaformUrlFieldComponent } from './MetaformUrlField';
-import { MetaformAutocompleteFieldComponent } from './MetaformAutocompleteField';
+import { MetaformAutocompleteFieldComponent, MetaformAutocompleteItem } from './MetaformAutocompleteField';
 import { MetaformHiddenFieldComponent } from './MetaformHiddenFieldComponent';
 import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
 import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
@@ -24,6 +24,7 @@ interface Props {
   formReadOnly: boolean,
   metaformId: string,
   field: MetaformField,
+  renderBeforeField?: (fieldName?: string) => JSX.Element | void,
   contexts?: string[],
   requiredFieldsMissingError?: string,
   showRequiredFieldsMissingError?: boolean,
@@ -32,7 +33,7 @@ interface Props {
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void,
-  setAutocompleteOptions: (path: string) => Promise<string[]>,
+  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>,
   renderIcon: (icon: IconName, key: string) => ReactNode,
   onSubmit: (source: MetaformField) => void
 }
@@ -82,6 +83,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
 
     return (
       <div className={ classNames.join(" ") } key={ this.getFieldId() }>
+        { this.props.renderBeforeField && this.props.renderBeforeField(this.props.field.name) }
         { this.renderTitle() }
         { this.renderInput() }
         { this.renderHelp() }

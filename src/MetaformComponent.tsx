@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { Metaform, MetaformField } from './generated/client/models';
 import { MetaformSectionComponent } from './MetaformSectionComponent';
 import { FieldValue, IconName } from './types';
+import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
 
 /**
  * Component props
@@ -9,6 +10,7 @@ import { FieldValue, IconName } from './types';
 interface Props {
   form: Metaform,
   formReadOnly: boolean,
+  renderBeforeField?: (fieldName?: string) => JSX.Element | void,
   contexts?: string[],
   requiredFieldsMissingError?: string;
   showRequiredFieldsMissingError?: boolean,
@@ -17,7 +19,7 @@ interface Props {
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void,
-  setAutocompleteOptions: (path: string) => Promise<string[]>,
+  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>,
   renderIcon: (icon: IconName, key: string) => ReactNode,
   onSubmit: (source: MetaformField) => void
 }
@@ -64,7 +66,8 @@ export class MetaformComponent extends React.Component<Props, State> {
 
             return ( 
               <MetaformSectionComponent 
-                key = {`${this.state.metaformId }-${sectionId}`} 
+                key = {`${this.state.metaformId }-${sectionId}`}
+                renderBeforeField={this.props.renderBeforeField}
                 datePicker={ this.props.datePicker } 
                 datetimePicker={ this.props.datetimePicker } 
                 setAutocompleteOptions={ this.props.setAutocompleteOptions } 
