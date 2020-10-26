@@ -11,6 +11,8 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
+  requiredFieldsMissingError?: string,
+  showRequiredFieldsMissingError?: boolean,
   onValueChange: (value: FieldValue) => void,
   onFocus: () => void,
   renderIcon: (icon: IconName, key: string) => ReactNode
@@ -53,18 +55,20 @@ export class MetaformRadioFieldComponent extends React.Component<Props, State> {
     const value = this.props.value as string;
 
     return (
-      <div>
-        {
-          options.map((option, i) => {
-            return (
-              <div key={ `${this.props.fieldId}-${option.name}-container` }>
-                { this.renderOption(option, value) }
-              </div>
-            );
-          })
-        }
-
-      </div>
+      <>
+        <div>
+          {
+            options.map((option, i) => {
+              return (
+                <div key={ `${this.props.fieldId}-${option.name}-container` }>
+                  { this.renderOption(option, value) }
+                </div>
+              );
+            })
+          }
+          { this.renderRequiredFieldMissingError() }
+        </div>
+      </>
     );
   }
 
@@ -109,6 +113,22 @@ export class MetaformRadioFieldComponent extends React.Component<Props, State> {
         onFocus={ this.props.onFocus }
         />
     }
+  }
+
+  /**
+   * Renders required field missing error
+   */
+  private renderRequiredFieldMissingError = () => {
+    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field } = this.props;
+    const { required } = field;
+
+    if (!required || !showRequiredFieldsMissingError) {
+      return;
+    }
+
+    return (
+      <p className="metaform-field-missing-error">{ requiredFieldsMissingError }</p>
+    );
   }
   
   /**

@@ -11,6 +11,8 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
+  requiredFieldsMissingError?: string,
+  showRequiredFieldsMissingError?: boolean,
   onValueChange: (value: FieldValue) => void,
   onFocus: () => void
 }

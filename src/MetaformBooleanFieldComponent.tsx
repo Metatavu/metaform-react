@@ -11,6 +11,8 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
+  requiredFieldsMissingError?: string,
+  showRequiredFieldsMissingError?: boolean,
   onValueChange: (value: FieldValue) => void,
   onFocus: () => void,
   renderIcon: (icon: IconName, key: string) => ReactNode
@@ -53,12 +55,15 @@ export class MetaformBooleanFieldComponent extends React.Component<Props, State>
     const value = this.props.value as string;
 
     return (
-      <div>
-        <label className="metaform-boolean-field-label" key={ `${this.props.fieldId}-${this.props.field.name}-label` } htmlFor={ `${this.props.fieldId}-${this.props.field.name}` }>
-          { this.renderOptionValue(option, value) }
-          <span> { option.text } </span>
-        </label>
-      </div>
+      <>
+        <div>
+          <label className="metaform-boolean-field-label" key={ `${this.props.fieldId}-${this.props.field.name}-label` } htmlFor={ `${this.props.fieldId}-${this.props.field.name}` }>
+            { this.renderOptionValue(option, value) }
+            <span> { option.text } </span>
+          </label>
+        </div>
+        { this.renderRequiredFieldMissingError() }
+      </>
     );
   }
 
@@ -91,6 +96,22 @@ export class MetaformBooleanFieldComponent extends React.Component<Props, State>
         onFocus={ this.props.onFocus }
         />
     }
+  }
+
+  /**
+   * Renders required field missing error
+   */
+  private renderRequiredFieldMissingError = () => {
+    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field } = this.props;
+    const { required } = field;
+
+    if (!required || !showRequiredFieldsMissingError) {
+      return;
+    }
+
+    return (
+      <p className="metaform-field-missing-error">{ requiredFieldsMissingError }</p>
+    );
   }
   
   /**

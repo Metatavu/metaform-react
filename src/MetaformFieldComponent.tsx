@@ -25,6 +25,8 @@ interface Props {
   metaformId: string,
   field: MetaformField,
   contexts?: string[],
+  requiredFieldsMissingError?: string,
+  showRequiredFieldsMissingError?: boolean,
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
@@ -110,33 +112,178 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
   private renderInput = () => {
     switch (this.props.field.type) {
       case MetaformFieldType.Text:
-        return <MetaformTextFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } getFieldValue={ this.getFieldValue } />;
+        return  <MetaformTextFieldComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field } onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  getFieldValue={ this.getFieldValue }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Memo:
-        return <MetaformMemoComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } getFieldValue={ this.getFieldValue } />;
+        return  <MetaformMemoComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  getFieldValue={ this.getFieldValue }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Radio:
-        return <MetaformRadioFieldComponent renderIcon={ this.props.renderIcon } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+        return  <MetaformRadioFieldComponent
+                  renderIcon={ this.props.renderIcon }
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Select:
-        return <MetaformSelectFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+        return  <MetaformSelectFieldComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Submit:
-        return <MetaformSubmitFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onClick={ this.props.onSubmit } value={ this.getFieldValue() } />;
+        return  <MetaformSubmitFieldComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onClick={ this.props.onSubmit }
+                  value={ this.getFieldValue() }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Boolean:
-        return <MetaformBooleanFieldComponent renderIcon={ this.props.renderIcon }  formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+        return  <MetaformBooleanFieldComponent
+                  renderIcon={ this.props.renderIcon }
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Html:
-        return <MetaformHtmlComponent fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } getFieldValue={ this.getFieldValue } />;
+        return  <MetaformHtmlComponent
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  getFieldValue={ this.getFieldValue }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Email:
-        return <MetaformEmailFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+        return  <MetaformEmailFieldComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Url:
-        return <MetaformUrlFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+        return  <MetaformUrlFieldComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Autocomplete:
-        return <MetaformAutocompleteFieldComponent setAutocompleteOptions={ this.props.setAutocompleteOptions } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+        return  <MetaformAutocompleteFieldComponent
+                  setAutocompleteOptions={ this.props.setAutocompleteOptions }
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Hidden:
-        return <MetaformHiddenFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+        return  <MetaformHiddenFieldComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Files:
-        return <MetaformFilesFieldComponent formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onFileUpload={ this.onFileUpload } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } />;
+        return  <MetaformFilesFieldComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onFileUpload={ this.onFileUpload }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.Date:
-        return <MetaformDateFieldComponent datePicker={ this.props.datePicker } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } getFieldValue={ this.getFieldValue } />;
+        return  <MetaformDateFieldComponent
+                  datePicker={ this.props.datePicker }
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  getFieldValue={ this.getFieldValue }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       case MetaformFieldType.DateTime:
-        return <MetaformDateTimeFieldComponent datetimePicker={ this.props.datetimePicker } formReadOnly={ this.props.formReadOnly } fieldLabelId={ this.getFieldLabelId() } fieldId={ this.getFieldId() } field={ this.props.field } onValueChange={ this.onValueChange } value={ this.getFieldValue() } onFocus={ this.onFocus } getFieldValue={ this.getFieldValue } />;
+        return  <MetaformDateTimeFieldComponent
+                  datetimePicker={ this.props.datetimePicker }
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  getFieldValue={ this.getFieldValue }
+                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                />;
       default:
         return <div style={{ color: "red" }}> Unknown field type { this.props.field.type } </div>;
     }
