@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { MetaformSection, MetaformField } from './models/api';
+import { MetaformSection, MetaformField } from './generated/client/models';
 import { MetaformFieldComponent } from './MetaformFieldComponent';
 import { FieldValue, IconName } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
@@ -14,6 +14,7 @@ interface Props {
   metaformId: string,
   sectionId: string,
   renderBeforeField?: (fieldName?: string) => JSX.Element | void,
+  contexts?: string[],
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
@@ -53,7 +54,7 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
    * Component render method
    */
   public render() {
-    if (!VisibileIfEvaluator.isVisible(this.props.section["visible-if"], this.props.getFieldValue)) {
+    if (!VisibileIfEvaluator.isVisible(this.props.section.visibleIf, this.props.getFieldValue)) {
       return null;
     }
 
@@ -78,7 +79,22 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
       <fieldset>
         {
           (this.props.section.fields || []).map((field, i) => {
-            return <MetaformFieldComponent key={ `${this.props.metaformId}-${this.props.sectionId}-field-${i}` } renderBeforeField={this.props.renderBeforeField} datePicker={ this.props.datePicker } datetimePicker={ this.props.datetimePicker } setAutocompleteOptions={ this.props.setAutocompleteOptions } uploadFile={ this.props.uploadFile } renderIcon={ this.props.renderIcon } getFieldValue={ this.props.getFieldValue } setFieldValue={ this.props.setFieldValue } formReadOnly={ this.props.formReadOnly } field={ field } metaformId={ this.props.metaformId } onSubmit={ this.props.onSubmit }/>
+            return (
+              <MetaformFieldComponent key={ `${this.props.metaformId}-${this.props.sectionId}-field-${i}` } 
+                datePicker={ this.props.datePicker } 
+                datetimePicker={ this.props.datetimePicker }
+                renderBeforeField={this.props.renderBeforeField}
+                setAutocompleteOptions={ this.props.setAutocompleteOptions } 
+                uploadFile={ this.props.uploadFile }
+                renderIcon={ this.props.renderIcon } 
+                getFieldValue={ this.props.getFieldValue } 
+                setFieldValue={ this.props.setFieldValue } 
+                formReadOnly={ this.props.formReadOnly } 
+                field={ field } 
+                metaformId={ this.props.metaformId } 
+                contexts={ this.props.contexts }
+                onSubmit={ this.props.onSubmit }/>
+            )
           })
         }
       </fieldset>

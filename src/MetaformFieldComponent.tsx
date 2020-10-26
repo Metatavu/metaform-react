@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { FieldValue, IconName } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import { MetaformMemoComponent } from './MetaformMemoComponent';
-import { MetaformField, MetaformFieldType } from './models/api';
+import { MetaformField, MetaformFieldType } from './generated/client/models';
 import { MetaformTextFieldComponent } from './MetaformTextFieldComponent';
 import { MetaformRadioFieldComponent } from './MetaformRadioFieldComponent';
 import { MetaformSubmitFieldComponent } from './MetaformSubmitFieldComponent';
@@ -25,6 +25,7 @@ interface Props {
   metaformId: string,
   field: MetaformField,
   renderBeforeField?: (fieldName?: string) => JSX.Element | void,
+  contexts?: string[],
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
@@ -64,7 +65,11 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * Component render method
    */
   public render() {
-    if (!VisibileIfEvaluator.isVisible(this.props.field["visible-if"], this.props.getFieldValue)) {
+    if (!this.isEnabledContext()) {
+      return null;
+    }
+
+    if (!VisibileIfEvaluator.isVisible(this.props.field.visibleIf, this.props.getFieldValue)) {
       return null;
     }
 
@@ -179,6 +184,22 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
     }
 
     return this.props.getFieldValue( this.props.field.name );
+  }
+
+  /**
+   * Returns whether field context is within enabled contexts
+   * 
+   * @returns whether field context is within enabled contexts
+   */
+  private isEnabledContext = () => {
+    const fieldContexts = this.props.field.contexts || [];
+    const enabledContexts = this.props.contexts || [];
+
+    if (enabledContexts.length === 0 || fieldContexts.length === 0) {
+      return true;
+    }
+
+    return !!enabledContexts.find(context => fieldContexts.includes(context));
   }
 
   /**

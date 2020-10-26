@@ -1,5 +1,5 @@
 import React from 'react';
-import { MetaformField } from './models/api';
+import { MetaformField } from './generated/client/models';
 import { FieldValue } from './types';
 import { isNull } from 'util';
 
