@@ -21,7 +21,7 @@ interface Props {
   formReadOnly: boolean,
   value: FieldValue,
   onValueChange: (value: FieldValue) => void,
-  setAutocompleteOptions: (path: string) => Promise<string[] | MetaformAutocompleteItem[]>,
+  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>,
   onFocus: () => void
 }
 
@@ -29,6 +29,7 @@ interface Props {
  * Component state
  */
 interface State {
+  displayValue: string
   matchedItems: MetaformAutocompleteItem[];
 }
 
@@ -46,6 +47,7 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
     super(props);
 
     this.state = {
+      displayValue: "",
       matchedItems: []
     };
   }
@@ -70,7 +72,7 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
           title={ this.props.field.title }
           required={ this.props.field.required }
           readOnly={ this.props.formReadOnly || this.props.field.readonly }
-          value={ this.props.value || "" }
+          value={ this.state.displayValue || "" }
           onChange={ this.onChange }
           onFocus={ this.props.onFocus }
         />
@@ -88,7 +90,7 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
       <ul style={{ overflow: "hidden", whiteSpace: "nowrap", padding: 0, margin: 0, listStyleType: "none", textAlign: "left", textOverflow: "ellipsis", display: matchedItems.length > 0 ? "block" : "none", position: "absolute", backgroundColor: "#fff", border: "1px solid #000", zIndex: 99, top: "100%", left: 0, right: 0 }}>
         {
           matchedItems.map(item => {
-            return <li style={{ paddingLeft: 5, paddingRight: 5, cursor: "pointer" }} onClick={ this.chooseItem(item.value) }>{ item.name }</li>
+            return <li style={{ paddingLeft: 5, paddingRight: 5, cursor: "pointer" }} onClick={ this.chooseItem(item) }>{ item.name }</li>
           })
         }
       </ul>
@@ -100,10 +102,11 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
    * 
    * @param item string
    */
-  private chooseItem = (item: string) => () => {
-    this.props.onValueChange(item);
+  private chooseItem = (item: MetaformAutocompleteItem) => () => {
+    this.props.onValueChange(item.value);
     this.setState({
-      matchedItems: []
+      matchedItems: [],
+      displayValue: item.name
     });
   }
 
@@ -116,7 +119,7 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
     if (!this.props.field.sourceUrl) {
       return;
     }
-    const itemsPromise = this.props.setAutocompleteOptions(this.props.field.sourceUrl);
+    const itemsPromise = this.props.setAutocompleteOptions(this.props.field.sourceUrl, input);
     itemsPromise.then(items => {
       if (input && items.length > 0) {
         const normalizedItems: MetaformAutocompleteItem[] = (items as any).map((item: string | MetaformAutocompleteItem) => {
@@ -148,7 +151,9 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
    */
   private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.autocomplete(event.target.value);
-    this.props.onValueChange(event.target.value);
+    this.setState({
+      displayValue: event.target.value
+    });
   }
 
 }
