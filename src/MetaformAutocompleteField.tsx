@@ -61,7 +61,7 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
     }
 
     return (
-      <div className="autocompletefield" style={{ position: "relative", display: "inline-block" }}>
+      <div className="metaform-autocomplete-field" style={{ position: "relative", display: "inline-block" }}>
         <input 
           type="text"
           autoComplete="off"
