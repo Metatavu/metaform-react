@@ -50,26 +50,7 @@ export class MetaformHtmlComponent extends React.Component<Props, State> {
     const dangerousInnerHTML = this.props.field.html || "";
 
     return (
-      <>
-        <div id={ this.props.fieldId } aria-labelledby={ this.props.fieldLabelId } dangerouslySetInnerHTML={{ __html: dangerousInnerHTML }}></div>
-        { this.renderRequiredFieldMissingError() }
-      </>
-    );
-  }
-
-  /**
-   * Renders required field missing error
-   */
-  private renderRequiredFieldMissingError = () => {
-    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field } = this.props;
-    const { required } = field;
-
-    if (!required || !showRequiredFieldsMissingError) {
-      return;
-    }
-
-    return (
-      <p className="metaform-field-missing-error">{ requiredFieldsMissingError }</p>
+      <div id={ this.props.fieldId } aria-labelledby={ this.props.fieldLabelId } dangerouslySetInnerHTML={{ __html: dangerousInnerHTML }}></div>
     );
   }
 }
