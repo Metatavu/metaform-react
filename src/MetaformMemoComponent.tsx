@@ -52,8 +52,8 @@ export class MetaformMemoComponent extends React.Component<Props, State> {
     return (
       <textarea
         placeholder={ this.props.field.placeholder }
-        id={ this.props.fieldId }  
-        aria-labelledby={ this.props.fieldLabelId } 
+        id={ this.props.fieldId }
+        aria-labelledby={ this.props.fieldLabelId }
         name={ this.props.field.name }
         title={ this.props.field.title }
         required={ this.props.field.required }
@@ -61,10 +61,10 @@ export class MetaformMemoComponent extends React.Component<Props, State> {
         value={ this.props.value || "" }
         onChange={ this.onChange }
         onFocus={ this.props.onFocus }
-        />
+      />
     );
   }
-  
+
   /**
    * Event handler for field input change
    * 

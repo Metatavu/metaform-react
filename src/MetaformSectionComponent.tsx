@@ -15,6 +15,8 @@ interface Props {
   sectionId: string,
   renderBeforeField?: (fieldName?: string) => JSX.Element | void,
   contexts?: string[],
+  requiredFieldsMissingError?: string,
+  showRequiredFieldsMissingError?: boolean,
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
@@ -93,7 +95,9 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
                 field={ field } 
                 metaformId={ this.props.metaformId } 
                 contexts={ this.props.contexts }
-                onSubmit={ this.props.onSubmit }/>
+                onSubmit={ this.props.onSubmit }
+                requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError } />
             )
           })
         }

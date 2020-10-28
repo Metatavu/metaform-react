@@ -62,12 +62,12 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
 
     return (
       <div style={{ position: "relative", display: "inline-block" }}>
-        <input 
+        <input
           type="text"
           autoComplete="off"
           placeholder={ this.props.field.placeholder }
-          id={ this.props.fieldId }  
-          aria-labelledby={ this.props.fieldLabelId } 
+          id={ this.props.fieldId }
+          aria-labelledby={ this.props.fieldLabelId }
           name={ this.props.field.name }
           title={ this.props.field.title }
           required={ this.props.field.required }

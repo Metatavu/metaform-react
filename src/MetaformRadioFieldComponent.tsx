@@ -55,15 +55,12 @@ export class MetaformRadioFieldComponent extends React.Component<Props, State> {
     return (
       <div>
         {
-          options.map((option, i) => {
-            return (
-              <div key={ `${this.props.fieldId}-${option.name}-container` }>
-                { this.renderOption(option, value) }
-              </div>
-            );
-          })
+          options.map((option, i) =>  (
+            <div key={ `${this.props.fieldId}-${option.name}-container` }>
+              { this.renderOption(option, value) }
+            </div>
+          ))
         }
-
       </div>
     );
   }
@@ -110,7 +107,7 @@ export class MetaformRadioFieldComponent extends React.Component<Props, State> {
         />
     }
   }
-  
+
   /**
    * Event handler for field input change
    * 
