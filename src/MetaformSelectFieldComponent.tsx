@@ -49,9 +49,11 @@ export class MetaformSelectFieldComponent extends React.Component<Props, State> 
     }
 
     return (
-      <select onChange={ this.onChange } value={ this.state.selectedOption } autoFocus={ false } >
-        { (this.props.field.options || []).map((option) => <option key={ option.name } value={ option.name } { ...option.selected = this.state.selectedOption === option.name }>{ option.text }</option>) }
-      </select>
+      <div>
+        <select onChange={ this.onChange } value={ this.state.selectedOption } autoFocus={ false } >
+          { (this.props.field.options || []).map((option) => <option key={ option.name } value={ option.name } { ...option.selected = this.state.selectedOption === option.name }>{ option.text }</option>) }
+        </select>
+      </div>
     );
   }
 

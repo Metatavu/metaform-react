@@ -53,10 +53,12 @@ export class MetaformBooleanFieldComponent extends React.Component<Props, State>
     const value = this.props.value as string;
 
     return (
-      <label className="metaform-boolean-field-label" key={ `${this.props.fieldId}-${this.props.field.name}-label` } htmlFor={ `${this.props.fieldId}-${this.props.field.name}` }>
-        { this.renderOptionValue(option, value) }
-        <span> { option.text } </span>
-      </label>
+      <div>
+        <label className="metaform-boolean-field-label" key={ `${this.props.fieldId}-${this.props.field.name}-label` } htmlFor={ `${this.props.fieldId}-${this.props.field.name}` }>
+          { this.renderOptionValue(option, value) }
+          <span> { option.text } </span>
+        </label>
+      </div>
     );
   }
 
