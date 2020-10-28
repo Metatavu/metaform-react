@@ -66,10 +66,10 @@ export class MetaformSelectFieldComponent extends React.Component<Props, State> 
    * Renders required field missing error
    */
   private renderRequiredFieldMissingError = () => {
-    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field } = this.props;
+    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field, value } = this.props;
     const { required } = field;
 
-    if (!required || !showRequiredFieldsMissingError) {
+    if (!required || !showRequiredFieldsMissingError || value) {
       return;
     }
 
