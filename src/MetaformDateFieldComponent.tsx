@@ -11,8 +11,6 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
-  requiredFieldsMissingError?: string,
-  showRequiredFieldsMissingError?: boolean,
   getFieldValue: (fieldName: string) => FieldValue,
   onValueChange: (value: FieldValue) => void,
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
@@ -52,28 +50,7 @@ export class MetaformDateFieldComponent extends React.Component<Props, State> {
       return null;
     }
 
-    return (
-      <>
-        { this.props.datePicker(this.props.field.name || "", this.onChange) }
-        { this.renderRequiredFieldMissingError() }
-      </>
-    );
-  }
-
-  /**
-   * Renders required field missing error
-   */
-  private renderRequiredFieldMissingError = () => {
-    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field, value } = this.props;
-    const { required } = field;
-
-    if (!required || !showRequiredFieldsMissingError || value) {
-      return;
-    }
-
-    return (
-      <p className="metaform-field-missing-error">{ requiredFieldsMissingError }</p>
-    );
+    return this.props.datePicker(this.props.field.name || "", this.onChange);
   }
   
   /**

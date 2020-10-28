@@ -86,6 +86,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
         { this.props.renderBeforeField && this.props.renderBeforeField(this.props.field.name) }
         { this.renderTitle() }
         { this.renderInput() }
+        { this.renderRequiredFieldMissingError() }
         { this.renderHelp() }
       </div>
     );
@@ -122,8 +123,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                   getFieldValue={ this.getFieldValue }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Memo:
         return  <MetaformMemoComponent
@@ -135,8 +134,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                   getFieldValue={ this.getFieldValue }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Radio:
         return  <MetaformRadioFieldComponent
@@ -148,8 +145,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Select:
         return  <MetaformSelectFieldComponent
@@ -160,8 +155,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Submit:
         return  <MetaformSubmitFieldComponent
@@ -171,8 +164,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   field={ this.props.field }
                   onClick={ this.props.onSubmit }
                   value={ this.getFieldValue() }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Boolean:
         return  <MetaformBooleanFieldComponent
@@ -184,8 +175,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Html:
         return  <MetaformHtmlComponent
@@ -193,8 +182,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   fieldId={ this.getFieldId() }
                   field={ this.props.field }
                   getFieldValue={ this.getFieldValue }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Email:
         return  <MetaformEmailFieldComponent
@@ -205,8 +192,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Url:
         return  <MetaformUrlFieldComponent
@@ -217,8 +202,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Autocomplete:
         return  <MetaformAutocompleteFieldComponent
@@ -230,8 +213,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Hidden:
         return  <MetaformHiddenFieldComponent
@@ -242,8 +223,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Files:
         return  <MetaformFilesFieldComponent
@@ -255,8 +234,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.Date:
         return  <MetaformDateFieldComponent
@@ -269,8 +246,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                   getFieldValue={ this.getFieldValue }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       case MetaformFieldType.DateTime:
         return  <MetaformDateTimeFieldComponent
@@ -283,12 +258,27 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                   getFieldValue={ this.getFieldValue }
-                  requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                  showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
                 />;
       default:
         return <div style={{ color: "red" }}> Unknown field type { this.props.field.type } </div>;
     }
+  }
+
+  /**
+   * Renders required field missing error
+   */
+  private renderRequiredFieldMissingError = () => {
+    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field } = this.props;
+    const value = this.getFieldValue();
+    const { required } = field;
+
+    if (!required || !showRequiredFieldsMissingError || value) {
+      return;
+    }
+
+    return (
+      <p className="metaform-field-missing-error">{ requiredFieldsMissingError }</p>
+    );
   }
 
   /**

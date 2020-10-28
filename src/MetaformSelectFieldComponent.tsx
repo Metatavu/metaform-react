@@ -11,8 +11,6 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
-  requiredFieldsMissingError?: string,
-  showRequiredFieldsMissingError?: boolean,
   onValueChange: (value: FieldValue) => void,
   onFocus: () => void
 }
@@ -51,30 +49,9 @@ export class MetaformSelectFieldComponent extends React.Component<Props, State> 
     }
 
     return (
-      <>
-        <div>
-          <select onChange={ this.onChange } value={ this.state.selectedOption } autoFocus={ false } >
-            { (this.props.field.options || []).map((option) => <option key={ option.name } value={ option.name } { ...option.selected = this.state.selectedOption === option.name }>{ option.text }</option>) }
-          </select>
-        </div>
-        { this.renderRequiredFieldMissingError() }
-      </>
-    );
-  }
-
-  /**
-   * Renders required field missing error
-   */
-  private renderRequiredFieldMissingError = () => {
-    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field, value } = this.props;
-    const { required } = field;
-
-    if (!required || !showRequiredFieldsMissingError || value) {
-      return;
-    }
-
-    return (
-      <p className="metaform-field-missing-error">{ requiredFieldsMissingError }</p>
+      <select onChange={ this.onChange } value={ this.state.selectedOption } autoFocus={ false } >
+        { (this.props.field.options || []).map((option) => <option key={ option.name } value={ option.name } { ...option.selected = this.state.selectedOption === option.name }>{ option.text }</option>) }
+      </select>
     );
   }
 

@@ -9,8 +9,6 @@ interface Props {
   field: MetaformField,
   fieldId: string,
   fieldLabelId: string,
-  requiredFieldsMissingError?: string,
-  showRequiredFieldsMissingError?: boolean,
   getFieldValue: (fieldName: string) => FieldValue,
 }
 

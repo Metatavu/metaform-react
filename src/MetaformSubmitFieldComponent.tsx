@@ -11,8 +11,6 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
-  requiredFieldsMissingError?: string,
-  showRequiredFieldsMissingError?: boolean,
   onClick: (source: MetaformField) => void
 }
 
@@ -50,31 +48,12 @@ export class MetaformSubmitFieldComponent extends React.Component<Props, State> 
     }
 
     return (
-      <>
-        <input
-          type="submit"
-          disabled={ this.props.formReadOnly || this.props.field.readonly }
-          value={ this.props.field.text }
-          onClick={ this.onClick }
-        />
-        { this.renderRequiredFieldMissingError() }
-      </>
-    );
-  }
-
-  /**
-   * Renders required field missing error
-   */
-  private renderRequiredFieldMissingError = () => {
-    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field, value } = this.props;
-    const { required } = field;
-
-    if (!required || !showRequiredFieldsMissingError || value) {
-      return;
-    }
-
-    return (
-      <p className="metaform-field-missing-error">{ requiredFieldsMissingError }</p>
+      <input
+        type="submit"
+        disabled={ this.props.formReadOnly || this.props.field.readonly }
+        value={ this.props.field.text }
+        onClick={ this.onClick }
+      />
     );
   }
   

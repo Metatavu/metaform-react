@@ -20,8 +20,6 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
-  requiredFieldsMissingError?: string,
-  showRequiredFieldsMissingError?: boolean,
   onValueChange: (value: FieldValue) => void,
   setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>,
   onFocus: () => void
@@ -63,7 +61,6 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
     }
 
     return (
-      <>
         <div style={{ position: "relative", display: "inline-block" }}>
           <input
             type="text"
@@ -81,8 +78,6 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
           />
           { this.renderAutocompleteItems() }
         </div>
-        { this.renderRequiredFieldMissingError() }
-      </>
     );
   }
 
@@ -147,22 +142,6 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
         });
       }
     });
-  }
-
-  /**
-   * Renders required field missing error
-   */
-  private renderRequiredFieldMissingError = () => {
-    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field, value } = this.props;
-    const { required } = field;
-
-    if (!required || !showRequiredFieldsMissingError || value) {
-      return;
-    }
-
-    return (
-      <p className="metaform-field-missing-error">{ requiredFieldsMissingError }</p>
-    );
   }
 
   /**

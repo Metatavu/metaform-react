@@ -11,8 +11,6 @@ interface Props {
   fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
-  requiredFieldsMissingError?: string,
-  showRequiredFieldsMissingError?: boolean,
   getFieldValue: (fieldName: string) => FieldValue,
   onValueChange: (value: FieldValue) => void,
   onFocus: () => void
@@ -52,38 +50,19 @@ export class MetaformTextFieldComponent extends React.Component<Props, State> {
     }
 
     return (
-      <>
-        <input
-          type="text"
-          placeholder={ this.props.field.placeholder }
-          id={ this.props.fieldId }
-          aria-labelledby={ this.props.fieldLabelId }
-          name={ this.props.field.name }
-          title={ this.props.field.title }
-          required={ this.props.field.required }
-          readOnly={ this.props.formReadOnly || this.props.field.readonly }
-          value={ this.props.value || "" }
-          onChange={ this.onChange }
-          onFocus={ this.props.onFocus }
-        />
-        { this.renderRequiredFieldMissingError() }
-      </>
-    );
-  }
-
-  /**
-   * Renders required field missing error
-   */
-  private renderRequiredFieldMissingError = () => {
-    const { showRequiredFieldsMissingError, requiredFieldsMissingError, field, value } = this.props;
-    const { required } = field;
-
-    if (!required || !showRequiredFieldsMissingError || value) {
-      return;
-    }
-
-    return (
-      <p className="metaform-field-missing-error">{ requiredFieldsMissingError }</p>
+      <input
+        type="text"
+        placeholder={ this.props.field.placeholder }
+        id={ this.props.fieldId }
+        aria-labelledby={ this.props.fieldLabelId }
+        name={ this.props.field.name }
+        title={ this.props.field.title }
+        required={ this.props.field.required }
+        readOnly={ this.props.formReadOnly || this.props.field.readonly }
+        value={ this.props.value || "" }
+        onChange={ this.onChange }
+        onFocus={ this.props.onFocus }
+      />
     );
   }
   
