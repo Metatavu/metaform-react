@@ -12,6 +12,8 @@ interface Props {
   formReadOnly: boolean,
   renderBeforeField?: (fieldName?: string) => JSX.Element | void,
   contexts?: string[],
+  requiredFieldsMissingError?: string;
+  showRequiredFieldsMissingError?: boolean,
   getFieldValue: (fieldName: string) => FieldValue,
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
@@ -78,7 +80,11 @@ export class MetaformComponent extends React.Component<Props, State> {
                 formReadOnly={ this.props.formReadOnly } 
                 section={ section } 
                 contexts={ this.props.contexts }
-                onSubmit={ this.props.onSubmit }/> )
+                onSubmit={ this.props.onSubmit }
+                requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
+                showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+              />
+            )
           })
         }
       </div>

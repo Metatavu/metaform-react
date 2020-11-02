@@ -49,11 +49,11 @@ export class MetaformEmailFieldComponent extends React.Component<Props, State> {
     }
 
     return (
-      <input 
-        type="email" 
+      <input
+        type="email"
         placeholder={ this.props.field.placeholder }
-        id={ this.props.fieldId }  
-        aria-labelledby={ this.props.fieldLabelId } 
+        id={ this.props.fieldId }
+        aria-labelledby={ this.props.fieldLabelId }
         name={ this.props.field.name }
         title={ this.props.field.title }
         required={ this.props.field.required }
@@ -61,7 +61,7 @@ export class MetaformEmailFieldComponent extends React.Component<Props, State> {
         value={ this.props.value || "" }
         onChange={ this.onChange }
         onFocus={ this.props.onFocus }
-        />
+      />
     );
   }
   

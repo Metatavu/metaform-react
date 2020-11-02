@@ -48,12 +48,12 @@ export class MetaformSubmitFieldComponent extends React.Component<Props, State> 
     }
 
     return (
-      <input 
-        type="submit" 
+      <input
+        type="submit"
         disabled={ this.props.formReadOnly || this.props.field.readonly }
         value={ this.props.field.text }
         onClick={ this.onClick }
-        />
+      />
     );
   }
   
