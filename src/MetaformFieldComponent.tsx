@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { FieldValue, IconName } from './types';
+import { FieldValue, IconName, Strings } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import { MetaformMemoComponent } from './MetaformMemoComponent';
 import { MetaformField, MetaformFieldType } from './generated/client/models';
@@ -17,26 +17,28 @@ import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
 import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
 import { MetaformDateTimeFieldComponent } from './MetaformDateTimeFieldComponent';
 import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent'; 
+import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent";
 
 /**
  * Component props
  */
 interface Props {
-  formReadOnly: boolean,
-  metaformId: string,
-  field: MetaformField,
-  renderBeforeField?: (fieldName?: string) => JSX.Element | void,
-  contexts?: string[],
-  requiredFieldsMissingError?: string,
-  showRequiredFieldsMissingError?: boolean,
-  getFieldValue: (fieldName: string) => FieldValue,
-  setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
-  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
-  datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
-  uploadFile: (fieldName: string, file: FileList | File, path: string) => void,
-  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>,
-  renderIcon: (icon: IconName, key: string) => ReactNode,
-  onSubmit: (source: MetaformField) => void
+  formReadOnly: boolean;
+  metaformId: string;
+  field: MetaformField;
+  renderBeforeField?: (fieldName?: string) => JSX.Element | void;
+  contexts?: string[];
+  requiredFieldsMissingError?: string;
+  showRequiredFieldsMissingError?: boolean;
+  strings: Strings;
+  getFieldValue: (fieldName: string) => FieldValue;
+  setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
+  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
+  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
+  renderIcon: (icon: IconName, key: string) => ReactNode;
+  onSubmit: (source: MetaformField) => void;
 }
 
 /**
@@ -269,6 +271,18 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
+                />;
+      case MetaformFieldType.Table:
+        return  <MetaformTableFieldComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  strings={ this.props.strings }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                  renderIcon={ this.props.renderIcon }
                 />;
       default:
         return <div style={{ color: "red" }}> Unknown field type { this.props.field.type } </div>;

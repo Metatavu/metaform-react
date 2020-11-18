@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Metaform, MetaformField } from './generated/client/models';
 import { MetaformSectionComponent } from './MetaformSectionComponent';
-import { FieldValue, IconName } from './types';
+import { FieldValue, IconName, Strings } from './types';
 import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
 
 /**
@@ -12,6 +12,7 @@ interface Props {
   formReadOnly: boolean,
   renderBeforeField?: (fieldName?: string) => JSX.Element | void,
   contexts?: string[],
+  strings: Strings;
   requiredFieldsMissingError?: string;
   showRequiredFieldsMissingError?: boolean,
   getFieldValue: (fieldName: string) => FieldValue,
@@ -66,7 +67,8 @@ export class MetaformComponent extends React.Component<Props, State> {
 
             return ( 
               <MetaformSectionComponent 
-                key = {`${this.state.metaformId }-${sectionId}`}
+                key={`${this.state.metaformId }-${sectionId}`}
+                strings={ this.props.strings }
                 renderBeforeField={this.props.renderBeforeField}
                 datePicker={ this.props.datePicker } 
                 datetimePicker={ this.props.datetimePicker } 

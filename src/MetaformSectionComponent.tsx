@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { MetaformSection, MetaformField } from './generated/client/models';
 import { MetaformFieldComponent } from './MetaformFieldComponent';
-import { FieldValue, IconName } from './types';
+import { FieldValue, IconName, Strings } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
 
@@ -9,22 +9,23 @@ import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
  * Component props
  */
 interface Props {
-  section: MetaformSection,
-  formReadOnly: boolean,
-  metaformId: string,
-  sectionId: string,
-  renderBeforeField?: (fieldName?: string) => JSX.Element | void,
-  contexts?: string[],
-  requiredFieldsMissingError?: string,
-  showRequiredFieldsMissingError?: boolean,
-  getFieldValue: (fieldName: string) => FieldValue,
-  setFieldValue: (fieldName: string, fieldValue: FieldValue) => void,
-  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
-  datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element,
-  uploadFile: (fieldName: string, file: FileList | File, path: string) => void,
-  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>,
-  renderIcon: (icon: IconName, key: string) => ReactNode,
-  onSubmit: (source: MetaformField) => void
+  section: MetaformSection;
+  formReadOnly: boolean;
+  metaformId: string;
+  sectionId: string;
+  renderBeforeField?: (fieldName?: string) => JSX.Element | void;
+  contexts?: string[];
+  requiredFieldsMissingError?: string;
+  showRequiredFieldsMissingError?: boolean;
+  strings: Strings;
+  getFieldValue: (fieldName: string) => FieldValue;
+  setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
+  datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
+  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
+  renderIcon: (icon: IconName, key: string) => ReactNode;
+  onSubmit: (source: MetaformField) => void;
 }
 
 /**
@@ -93,6 +94,7 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
                 setFieldValue={ this.props.setFieldValue } 
                 formReadOnly={ this.props.formReadOnly } 
                 field={ field } 
+                strings={ this.props.strings }
                 metaformId={ this.props.metaformId } 
                 contexts={ this.props.contexts }
                 onSubmit={ this.props.onSubmit }
