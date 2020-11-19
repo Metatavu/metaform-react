@@ -17,7 +17,8 @@ import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
 import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
 import { MetaformDateTimeFieldComponent } from './MetaformDateTimeFieldComponent';
 import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent'; 
-import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent";
+import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent"; 
+import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldComponent";
 
 /**
  * Component props
@@ -272,6 +273,17 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
+      case MetaformFieldType.Checklist:
+        return <MetaformChecklistFieldComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  renderIcon={ this.props.renderIcon }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+               />
       case MetaformFieldType.Table:
         return  <MetaformTableFieldComponent
                   formReadOnly={ this.props.formReadOnly }
