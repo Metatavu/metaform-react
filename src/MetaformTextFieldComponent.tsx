@@ -59,7 +59,7 @@ export class MetaformTextFieldComponent extends React.Component<Props, State> {
         title={ this.props.field.title }
         required={ this.props.field.required }
         readOnly={ this.props.formReadOnly || this.props.field.readonly }
-        value={ this.props.value || "" }
+        value={ this.props.value as string || "" }
         onChange={ this.onChange }
         onFocus={ this.props.onFocus }
       />
