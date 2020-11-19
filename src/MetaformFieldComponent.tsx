@@ -16,6 +16,7 @@ import { MetaformHiddenFieldComponent } from './MetaformHiddenFieldComponent';
 import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
 import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
 import { MetaformDateTimeFieldComponent } from './MetaformDateTimeFieldComponent';
+import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent'; 
 
 /**
  * Component props
@@ -259,6 +260,16 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onFocus={ this.onFocus }
                   getFieldValue={ this.getFieldValue }
                 />;
+      case MetaformFieldType.Number:
+        return  <MetaformNumberFieldComponent
+                  formReadOnly={ this.props.formReadOnly }
+                  fieldLabelId={ this.getFieldLabelId() }
+                  fieldId={ this.getFieldId() }
+                  field={ this.props.field }
+                  onValueChange={ this.onValueChange }
+                  value={ this.getFieldValue() }
+                  onFocus={ this.onFocus }
+                />;
       default:
         return <div style={{ color: "red" }}> Unknown field type { this.props.field.type } </div>;
     }
@@ -320,7 +331,12 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
       return null;
     }
 
-    return this.props.getFieldValue( this.props.field.name );
+    const result = this.props.getFieldValue(this.props.field.name);
+    if (!result && this.props.field._default) {
+      return this.props.field._default;
+    }
+
+    return result;
   }
 
   /**
