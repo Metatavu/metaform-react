@@ -58,7 +58,7 @@ export class MetaformNumberFieldComponent extends React.Component<Props, State> 
         title={ this.props.field.title }
         required={ this.props.field.required }
         readOnly={ this.props.formReadOnly || this.props.field.readonly }
-        value={ this.props.value || "" }
+        value={ this.props.value as number || "" }
         min={ this.props.field.min }
         max={ this.props.field.max }
         step={ this.props.field.step }

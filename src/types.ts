@@ -1,7 +1,24 @@
 /**
+ * Type for single table cell value
+ */
+export type TableFieldCellValue = string | number | null;
+
+/**
+ * Interface for values in single row
+ */
+export interface TableFieldRowValue { 
+  [key: string]: TableFieldCellValue
+}
+
+/**
+ * Type for table field value
+ */
+export type TableFieldValue = TableFieldRowValue[];
+
+/**
  * Type for field value
  */
-export type FieldValue = string | number | null;
+export type FieldValue = string | number | TableFieldValue | null;
 
 /**
  * Type for icon name
