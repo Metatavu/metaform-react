@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { MetaformSection, MetaformField } from './generated/client/models';
 import { MetaformFieldComponent } from './MetaformFieldComponent';
-import { FieldValue, IconName, Strings } from './types';
+import { FieldValue, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
 
@@ -18,6 +18,7 @@ interface Props {
   requiredFieldsMissingError?: string;
   showRequiredFieldsMissingError?: boolean;
   strings: Strings;
+  validationErrors: ValidationErrors;
   getFieldValue: (fieldName: string) => FieldValue;
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
@@ -84,6 +85,7 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
           (this.props.section.fields || []).map((field, i) => {
             return (
               <MetaformFieldComponent key={ `${this.props.metaformId}-${this.props.sectionId}-field-${i}` } 
+                validationErrors={ this.props.validationErrors }
                 datePicker={ this.props.datePicker } 
                 datetimePicker={ this.props.datetimePicker }
                 renderBeforeField={this.props.renderBeforeField}
@@ -99,7 +101,8 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
                 contexts={ this.props.contexts }
                 onSubmit={ this.props.onSubmit }
                 requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
-                showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError } />
+                showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError } 
+              />
             )
           })
         }

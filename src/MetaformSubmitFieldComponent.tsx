@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { MetaformField } from './generated/client/models';
-import { FieldValue } from './types';
+import { FieldValue, ValidationErrors } from './types';
 
 /**
  * Component props
  */
 interface Props {
-  field: MetaformField,
-  fieldId: string,
-  fieldLabelId: string,
-  formReadOnly: boolean,
-  value: FieldValue,
-  onClick: (source: MetaformField) => void
+  field: MetaformField;
+  fieldId: string;
+  fieldLabelId: string;
+  formReadOnly: boolean;
+  value: FieldValue;
+  validationErrors: ValidationErrors;
+  onClick: (source: MetaformField) => void;
 }
 
 /**
@@ -43,14 +44,25 @@ export class MetaformSubmitFieldComponent extends React.Component<Props, State> 
    * Component render method
    */
   public render() {
-    if (!this.props.field.name) {
+    const { field, validationErrors } = this.props;
+
+    if (!field.name) {
       return null;
+    }
+
+    const hasValidationErrors = Object.keys(validationErrors).length > 0;
+    const disabled = hasValidationErrors || this.props.formReadOnly || this.props.field.readonly;
+    const style: CSSProperties = {};
+
+    if (disabled) {
+      style["background"] = "#aaa";
     }
 
     return (
       <input
         type="submit"
-        disabled={ this.props.formReadOnly || this.props.field.readonly }
+        style={ style }
+        disabled={ disabled }
         value={ this.props.field.text }
         onClick={ this.onClick }
       />

@@ -6,13 +6,13 @@ import { FieldValue } from './types';
  * Component props
  */
 interface Props {
-  field: MetaformField,
-  fieldId: string,
-  fieldLabelId: string,
-  formReadOnly: boolean,
-  value: FieldValue,
-  onValueChange: (value: FieldValue) => void,
-  onFocus: () => void
+  field: MetaformField;
+  fieldId: string;
+  fieldLabelId: string;
+  formReadOnly: boolean;
+  value: FieldValue;
+  onValueChange: (value: FieldValue) => void;
+  onFocus: () => void;
 }
 
 /**
@@ -71,7 +71,8 @@ export class MetaformEmailFieldComponent extends React.Component<Props, State> {
    * @param event event
    */
   private onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onValueChange(event.target.value);
+    const value = event.target.value;
+    this.props.onValueChange(value);
   }
 
 }
