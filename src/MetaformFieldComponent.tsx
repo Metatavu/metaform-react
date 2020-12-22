@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { FieldValue, IconName, Strings } from './types';
+import { FieldValue, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import { MetaformMemoComponent } from './MetaformMemoComponent';
 import { MetaformField, MetaformFieldType } from './generated/client/models';
@@ -19,6 +19,7 @@ import { MetaformDateTimeFieldComponent } from './MetaformDateTimeFieldComponent
 import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent'; 
 import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent"; 
 import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldComponent";
+import ContextUtils from './context-utils';
 
 /**
  * Component props
@@ -32,6 +33,7 @@ interface Props {
   requiredFieldsMissingError?: string;
   showRequiredFieldsMissingError?: boolean;
   strings: Strings;
+  validationErrors: ValidationErrors;
   getFieldValue: (fieldName: string) => FieldValue;
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
@@ -71,11 +73,13 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * Component render method
    */
   public render() {
-    if (!this.isEnabledContext()) {
+    const { contexts, field, getFieldValue, renderBeforeField } = this.props;
+
+    if (!ContextUtils.isEnabledContext(contexts, field.contexts)) {
       return null;
     }
 
-    if (!VisibileIfEvaluator.isVisible(this.props.field.visibleIf, this.props.getFieldValue)) {
+    if (!VisibileIfEvaluator.isVisible(field.visibleIf, getFieldValue)) {
       return null;
     }
 
@@ -87,7 +91,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
 
     return (
       <div className={ classNames.join(" ") } key={ this.getFieldId() }>
-        { this.props.renderBeforeField && this.props.renderBeforeField(this.props.field.name) }
+        { renderBeforeField && renderBeforeField(field.name) }
         { this.renderTitle() }
         { this.renderInput() }
         { this.renderRequiredFieldMissingError() }
@@ -162,6 +166,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                 />;
       case MetaformFieldType.Submit:
         return  <MetaformSubmitFieldComponent
+                  validationErrors={ this.props.validationErrors }
                   formReadOnly={ this.props.formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
@@ -363,22 +368,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
     }
 
     return result;
-  }
-
-  /**
-   * Returns whether field context is within enabled contexts
-   * 
-   * @returns whether field context is within enabled contexts
-   */
-  private isEnabledContext = () => {
-    const fieldContexts = this.props.field.contexts || [];
-    const enabledContexts = this.props.contexts || [];
-
-    if (enabledContexts.length === 0 || fieldContexts.length === 0) {
-      return true;
-    }
-
-    return !!enabledContexts.find(context => fieldContexts.includes(context));
   }
 
   /**

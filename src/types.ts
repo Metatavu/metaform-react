@@ -35,3 +35,13 @@ export interface Strings {
   };
 
 }
+
+/**
+ * Field validation status
+ */
+export type ValidationStatus = "missing-required" | "invalid-email";
+
+/**
+ * Field validation error map
+ */
+export type ValidationErrors = { [fieldName: string]: ValidationStatus };
