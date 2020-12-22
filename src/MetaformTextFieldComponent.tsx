@@ -40,7 +40,6 @@ export class MetaformTextFieldComponent extends React.Component<Props, State> {
       
     };
   }
-  
   /**
    * Component render method
    */
