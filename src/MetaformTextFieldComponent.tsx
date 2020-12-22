@@ -47,7 +47,6 @@ export class MetaformTextFieldComponent extends React.Component<Props, State> {
     if (!this.props.field.name) {
       return null;
     }
-    
     return (
       <input
         type="text"
