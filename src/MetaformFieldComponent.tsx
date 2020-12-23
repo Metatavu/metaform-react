@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { FieldValue, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
+import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import { MetaformMemoComponent } from './MetaformMemoComponent';
 import { MetaformField, MetaformFieldType } from './generated/client/models';
@@ -39,6 +39,10 @@ interface Props {
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
+  fileShowButtonText: string;
+  fileDeleteButtonText: string;
+  onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
+  onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   onSubmit: (source: MetaformField) => void;
@@ -243,6 +247,10 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
+                  onFileDelete={ this.props.onFileDelete }
+                  onFileShow={ this.props.onFileShow }
+                  deleteButtonText={ this.props.fileDeleteButtonText }
+                  showButtonText={ this.props.fileShowButtonText }
                 />;
       case MetaformFieldType.Date:
         return  <MetaformDateFieldComponent

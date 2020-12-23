@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Metaform, MetaformField, MetaformFieldType } from './generated/client/models';
 import { MetaformSectionComponent } from './MetaformSectionComponent';
-import { FieldValue, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
+import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
 import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
 import * as EmailValidator from 'email-validator';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
@@ -18,7 +18,7 @@ interface Props {
   strings: Strings;
   requiredFieldsMissingError?: string;
   showRequiredFieldsMissingError?: boolean;
-  getFieldValue: (fieldName: string) => FieldValue;
+  getFieldValue: (fieldName: string) => FieldValue
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
@@ -26,6 +26,8 @@ interface Props {
   setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   onSubmit: (source: MetaformField) => void;
+  onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
+  onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
 }
 
 /**
@@ -98,6 +100,10 @@ export class MetaformComponent extends React.Component<Props, State> {
                 onSubmit={ this.props.onSubmit }
                 requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
                 showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError }
+                onFileShow={ this.props.onFileShow }
+                onFileDelete={ this.props.onFileDelete }
+                fileShowButtonText={ this.props.strings.fileField.showFileButton }
+                fileDeleteButtonText={ this.props.strings.fileField.deleteFileButton }
               />
             )
           })
