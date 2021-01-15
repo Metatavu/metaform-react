@@ -20,13 +20,19 @@ export type TableFieldValue = TableFieldRowValue[];
  */
 export type FieldValue = string | string[] | number | TableFieldValue | FileFieldValue | null;
 
+/**
+ * Type for field file
+ */
 export type FileFieldValueItem = {
   url?: string;
   name?: string;
   id: string;
-  secure: boolean;
+  persisted: boolean;
 }
 
+/**
+ * Type for field file
+ */
 export type FileFieldValue = {
   files: FileFieldValueItem[]
 }
