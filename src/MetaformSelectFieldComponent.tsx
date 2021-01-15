@@ -19,7 +19,6 @@ interface Props {
  * Component state
  */
 interface State {
-  selectedOption: string | undefined;
 }
 
 /**
@@ -34,9 +33,7 @@ export class MetaformSelectFieldComponent extends React.Component<Props, State> 
    */
   constructor(props: Props) {
     super(props);
-    const options = (this.props.field.options || []);
     this.state = {
-      selectedOption: options.length > 0 ? options[0].name : undefined,
     };
   }
 
@@ -44,14 +41,20 @@ export class MetaformSelectFieldComponent extends React.Component<Props, State> 
    * Component render method
    */
   public render() {
-    if (!this.props.field.name) {
+    const { field, value, formReadOnly } = this.props;
+
+    if (!field.name) {
       return null;
     }
 
+    const options = field.options || [];
+    const selected = value as string || (options.length > 0 ? options[0].name : "");
+    const readOnly = formReadOnly || field.readonly;
+
     return (
       <div>
-        <select onChange={ this.onChange } value={ this.state.selectedOption } autoFocus={ false } >
-          { (this.props.field.options || []).map((option) => <option key={ option.name } value={ option.name } { ...option.selected = this.state.selectedOption === option.name }>{ option.text }</option>) }
+        <select onChange={ this.onChange } value={ selected } autoFocus={ false } disabled={ readOnly }>
+          { options.map((option) => <option key={ option.name } value={ option.name }>{ option.text }</option>) }
         </select>
       </div>
     );
@@ -66,9 +69,6 @@ export class MetaformSelectFieldComponent extends React.Component<Props, State> 
     const selectedValue = event.target.value as string;
 
     if (event.target.value) {
-      this.setState({
-        selectedOption: selectedValue
-      });
       this.props.onValueChange(selectedValue);
     }
   }
