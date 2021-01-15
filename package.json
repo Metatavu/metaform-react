@@ -1,6 +1,6 @@
 {
   "name": "metaform-react",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "main": "dist/index.js",
   "dependencies": {
     "email-validator": "^2.0.4",

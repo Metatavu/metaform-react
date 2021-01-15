@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { MetaformSection, MetaformField } from './generated/client/models';
 import { MetaformFieldComponent } from './MetaformFieldComponent';
-import { FieldValue, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
+import { FieldValue, FileFieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
 
@@ -27,6 +27,10 @@ interface Props {
   setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   onSubmit: (source: MetaformField) => void;
+  fileShowButtonText: string;
+  fileDeleteButtonText: string;
+  onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
+  onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
 }
 
 /**
@@ -100,6 +104,10 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
                 metaformId={ this.props.metaformId } 
                 contexts={ this.props.contexts }
                 onSubmit={ this.props.onSubmit }
+                onFileDelete={ this.props.onFileDelete }
+                onFileShow={ this.props.onFileShow }
+                fileShowButtonText={ this.props.fileShowButtonText }
+                fileDeleteButtonText={ this.props.fileDeleteButtonText }
                 requiredFieldsMissingError={ this.props.requiredFieldsMissingError }
                 showRequiredFieldsMissingError={ this.props.showRequiredFieldsMissingError } 
               />
