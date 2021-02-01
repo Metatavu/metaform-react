@@ -26,6 +26,7 @@ interface Props {
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
+  renderSlider?: (fieldName: string) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
   fileShowButtonText: string;
   fileDeleteButtonText: string;
@@ -96,6 +97,7 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
                 setAutocompleteOptions={ this.props.setAutocompleteOptions } 
                 uploadFile={ this.props.uploadFile }
                 renderIcon={ this.props.renderIcon } 
+                renderSlider={ this.props.renderSlider }
                 getFieldValue={ this.props.getFieldValue } 
                 setFieldValue={ this.props.setFieldValue } 
                 formReadOnly={ this.props.formReadOnly } 
