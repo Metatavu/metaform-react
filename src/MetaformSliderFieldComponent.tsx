@@ -6,7 +6,7 @@ import { FieldValue } from './types';
  * Component props
  */
 interface Props {
-  renderSlider?: (fieldName: string) => JSX.Element | null;
+  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   field: MetaformField;
   fieldId: string;
   fieldLabelId: string;
@@ -46,13 +46,17 @@ export class MetaformSliderFieldComponent extends React.Component<Props, State> 
    * Component render method
    */
   public render() {
-    const { field, renderSlider } = this.props;
+    const { field, renderSlider, formReadOnly } = this.props;
 
     if (!field.name || !renderSlider) {
       return null;
     }
+
+
     
-    return renderSlider(field.name);
+
+    const readOnly = !!(formReadOnly || field.readonly);    
+    return renderSlider(field.name, readOnly);
   }
 
 }

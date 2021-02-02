@@ -46,7 +46,7 @@ interface Props {
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
-  renderSlider?: (fieldName: string) => JSX.Element | null;
+  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
 }
 
