@@ -30,19 +30,6 @@ interface State {
 export class MetaformSliderFieldComponent extends React.Component<Props, State> {
 
   /**
-   * Constructor
-   * 
-   * @param props component props
-   */
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      
-    };
-  }
-
-  /**
    * Component render method
    */
   public render() {
