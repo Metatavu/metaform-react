@@ -289,17 +289,17 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   onFocus={ this.onFocus }
                 />;
       case MetaformFieldType.Slider:
-        return  <MetaformSliderFieldComponent
-                  renderSlider={ this.props.renderSlider }
-                  formReadOnly={ this.props.formReadOnly }
-                  fieldLabelId={ this.getFieldLabelId() }
-                  fieldId={ this.getFieldId() }
-                  field={ this.props.field }
-                  onValueChange={ this.onValueChange }
-                  value={ this.getFieldValue() }
-                  onFocus={ this.onFocus }
-                  getFieldValue={ this.getFieldValue }
-                />
+        return <MetaformSliderFieldComponent
+                 renderSlider={ this.props.renderSlider }
+                 formReadOnly={ this.props.formReadOnly }
+                 fieldLabelId={ this.getFieldLabelId() }
+                 fieldId={ this.getFieldId() }
+                 field={ this.props.field }
+                 onValueChange={ this.onValueChange }
+                 value={ this.getFieldValue() }
+                 onFocus={ this.onFocus }
+                 getFieldValue={ this.getFieldValue }
+               />
       case MetaformFieldType.Checklist:
         return <MetaformChecklistFieldComponent
                   formReadOnly={ this.props.formReadOnly }
