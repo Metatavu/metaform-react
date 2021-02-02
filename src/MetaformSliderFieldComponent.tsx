@@ -52,9 +52,6 @@ export class MetaformSliderFieldComponent extends React.Component<Props, State> 
       return null;
     }
 
-
-    
-
     const readOnly = !!(formReadOnly || field.readonly);    
     return renderSlider(field.name, readOnly);
   }
