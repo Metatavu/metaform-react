@@ -17,6 +17,7 @@ import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
 import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
 import { MetaformDateTimeFieldComponent } from './MetaformDateTimeFieldComponent';
 import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent'; 
+import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent'; 
 import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent"; 
 import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldComponent";
 import ContextUtils from './context-utils';
@@ -45,6 +46,7 @@ interface Props {
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
   setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
+  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
 }
 
@@ -286,6 +288,18 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
+      case MetaformFieldType.Slider:
+        return <MetaformSliderFieldComponent
+                 renderSlider={ this.props.renderSlider }
+                 formReadOnly={ this.props.formReadOnly }
+                 fieldLabelId={ this.getFieldLabelId() }
+                 fieldId={ this.getFieldId() }
+                 field={ this.props.field }
+                 onValueChange={ this.onValueChange }
+                 value={ this.getFieldValue() }
+                 onFocus={ this.onFocus }
+                 getFieldValue={ this.getFieldValue }
+               />
       case MetaformFieldType.Checklist:
         return <MetaformChecklistFieldComponent
                   formReadOnly={ this.props.formReadOnly }

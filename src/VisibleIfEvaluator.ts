@@ -1,4 +1,4 @@
-import { MetaformVisibleIf } from './generated/client/models';
+import { FieldRule } from './generated/client/models';
 import { FieldValue } from './types';
 
 /**
@@ -9,32 +9,32 @@ class VisibileIfEvaluator {
   /**
    * Evaluates given visible if rule
    * 
-   * @param visibleIf rule
+   * @param fieldRule rule
    * @param getFieldValue method for retrieving form values
    * @returns whether rule evaluated as visible or hidden
    */
-  public static isVisible = (visibleIf: MetaformVisibleIf | undefined, getFieldValue: (fieldName: string) => FieldValue) => {
-    if (!visibleIf) {
+  public static isVisible = (fieldRule: FieldRule| undefined, getFieldValue: (fieldName: string) => FieldValue) => {
+    if (!fieldRule) {
       return true;
     }
 
     let result: boolean = false;  
 
-    const field = visibleIf.field;
+    const field = fieldRule.field;
 
-    if (field && visibleIf.equals) {
-      const equals = visibleIf.equals as FieldValue; 
+    if (field && fieldRule.equals) {
+      const equals = fieldRule.equals as FieldValue; 
       const fieldValue = getFieldValue(field);
       result = equals === fieldValue;
     }
 
-    if (!result && field && visibleIf.notEquals) {
-      const notEquals = visibleIf.notEquals as FieldValue; 
+    if (!result && field && fieldRule.notEquals) {
+      const notEquals = fieldRule.notEquals as FieldValue; 
       const fieldValue = getFieldValue(field);
       result = notEquals !== fieldValue;
     }
 
-    const ands = visibleIf.and || [];
+    const ands = fieldRule.and || [];
     for (let i = 0; i < ands.length; i++) {
       if (!VisibileIfEvaluator.isVisible(ands[i], getFieldValue)) {
         return false;
@@ -42,7 +42,7 @@ class VisibileIfEvaluator {
     }
 
     if (!result) {
-      const ors = visibleIf.or || [];
+      const ors = fieldRule.or || [];
       for (let i = 0; i < ors.length; i++) {
         if (VisibileIfEvaluator.isVisible(ors[i], getFieldValue)) {
           return true;
