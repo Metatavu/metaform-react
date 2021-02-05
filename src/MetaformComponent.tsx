@@ -6,6 +6,7 @@ import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
 import * as EmailValidator from 'email-validator';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import ContextUtils from './context-utils';
+import deepEqual from "fast-deep-equal";
 
 /**
  * Component props
@@ -29,6 +30,7 @@ interface Props {
   onSubmit: (source: MetaformField) => void;
   onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
+  onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
 }
 
 /**
@@ -131,7 +133,7 @@ export class MetaformComponent extends React.Component<Props, State> {
    * Validates all visible form fields
    */
   private validateFields = () => {
-    const { form, contexts, getFieldValue } = this.props;
+    const { form, contexts, getFieldValue, onValidationErrorsChange } = this.props;
     const validationErrors: ValidationErrors = {};
     
     (form.sections || [])
@@ -154,9 +156,15 @@ export class MetaformComponent extends React.Component<Props, State> {
           });
       });
 
-    this.setState({
-      validationErrors: validationErrors
-    });
+    if (!deepEqual(validationErrors, this.state.validationErrors)) {
+      this.setState({
+        validationErrors: validationErrors
+      });
+
+      if (onValidationErrorsChange) {
+        onValidationErrorsChange(validationErrors);
+      }
+    }
   }
 
   /**
