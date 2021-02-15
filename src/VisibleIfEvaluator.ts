@@ -25,13 +25,13 @@ class VisibileIfEvaluator {
     if (field && fieldRule.equals) {
       const equals = fieldRule.equals as FieldValue; 
       const fieldValue = getFieldValue(field);
-      result = equals === fieldValue;
+      result = VisibileIfEvaluator.compareValues(equals, fieldValue);
     }
 
     if (!result && field && fieldRule.notEquals) {
       const notEquals = fieldRule.notEquals as FieldValue; 
       const fieldValue = getFieldValue(field);
-      result = notEquals !== fieldValue;
+      result = !VisibileIfEvaluator.compareValues(notEquals, fieldValue);
     }
 
     const ands = fieldRule.and || [];
@@ -51,6 +51,39 @@ class VisibileIfEvaluator {
     }
 
     return result;
+  }
+
+  /**
+   * Compares values and returns whether they should be considered as equal.
+   * 
+   * If one of values is an instance of number, both are converted to numbers before comparasion.
+   * 
+   * @param value1 value 1
+   * @param value2 value 2
+   * @returns whether values should be considered as equal.
+   */
+  private static compareValues(value1: FieldValue, value2: FieldValue): boolean {
+    if (value1 === value2) {
+      return true;
+    }
+
+    if (value2 === null || value1 === null) {
+      return false;
+    }
+
+    if (typeof value1 === "number") {
+      if (typeof value2 === "string") {
+        return parseFloat(value2) === value1;
+      }
+    }
+
+    if (typeof value2 === "number") {
+      if (typeof value1 === "string") {
+        return parseFloat(value1) === value2;
+      }
+    }
+    
+    return value1 === value2;
   }
 
 }
