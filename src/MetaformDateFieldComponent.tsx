@@ -1,6 +1,7 @@
 import React from 'react';
 import { MetaformField } from './generated/client/models';
 import { FieldValue } from './types';
+import moment from "moment";
 
 /**
  * Component props
@@ -59,7 +60,7 @@ export class MetaformDateFieldComponent extends React.Component<Props, State> {
    * @param event event
    */
   private onChange = (date: Date) => {
-    this.props.onValueChange(date.getTime());
+    this.props.onValueChange(date ? moment(date).format("YYYY-MM-DD") : null);
   }
 
 }
