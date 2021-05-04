@@ -59,7 +59,7 @@ export class MetaformDateTimeFieldComponent extends React.Component<Props, State
    * @param event event
    */
   private onChange = (date: Date) => {
-    this.props.onValueChange(date.getTime());
+    this.props.onValueChange(date ? date.toISOString() : null);
   }
 
 }
