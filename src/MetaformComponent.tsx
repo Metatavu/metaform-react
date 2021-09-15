@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import { Metaform, MetaformField, MetaformFieldType } from './generated/client/models';
 import { MetaformSectionComponent } from './MetaformSectionComponent';
 import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
-import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
 import * as EmailValidator from 'email-validator';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import ContextUtils from './context-utils';
@@ -23,8 +22,8 @@ interface Props {
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  renderAutocomplete: (field: MetaformField) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
-  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
@@ -71,7 +70,9 @@ export class MetaformComponent extends React.Component<Props, State> {
    * Component render method
    */
   public render() {
-    const sections = this.props.form.sections || [];
+    const { form, renderAutocomplete } = this.props;
+
+    const sections = form.sections || [];
 
     return (
       <div className="metaform">
@@ -89,8 +90,8 @@ export class MetaformComponent extends React.Component<Props, State> {
                 strings={ this.props.strings }
                 renderBeforeField={this.props.renderBeforeField}
                 datePicker={ this.props.datePicker } 
-                datetimePicker={ this.props.datetimePicker } 
-                setAutocompleteOptions={ this.props.setAutocompleteOptions } 
+                datetimePicker={ this.props.datetimePicker }
+                renderAutocomplete={ renderAutocomplete } 
                 uploadFile={ this.props.uploadFile }
                 renderIcon={ this.props.renderIcon } 
                 renderSlider={ this.props.renderSlider }

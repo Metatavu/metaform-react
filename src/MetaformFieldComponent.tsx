@@ -11,7 +11,7 @@ import { MetaformBooleanFieldComponent } from './MetaformBooleanFieldComponent';
 import { MetaformHtmlComponent } from './MetaformHtmlComponent';
 import { MetaformEmailFieldComponent } from './MetaformEmailComponent';
 import { MetaformUrlFieldComponent } from './MetaformUrlField';
-import { MetaformAutocompleteFieldComponent, MetaformAutocompleteItem } from './MetaformAutocompleteField';
+import { MetaformAutocompleteFieldComponent } from './MetaformAutocompleteField';
 import { MetaformHiddenFieldComponent } from './MetaformHiddenFieldComponent';
 import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
 import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
@@ -39,12 +39,12 @@ interface Props {
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  renderAutocomplete: (field: MetaformField) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   fileShowButtonText: string;
   fileDeleteButtonText: string;
   onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
-  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
@@ -127,6 +127,8 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * Renders field's input
    */
   private renderInput = () => {
+    const { renderAutocomplete } = this.props;
+
     switch (this.props.field.type) {
       case MetaformFieldType.Text:
         return  <MetaformTextFieldComponent
@@ -220,10 +222,10 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                 />;
       case MetaformFieldType.Autocomplete:
         return  <MetaformAutocompleteFieldComponent
-                  setAutocompleteOptions={ this.props.setAutocompleteOptions }
                   formReadOnly={ this.props.formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
+                  renderAutocomplete={ renderAutocomplete }
                   field={ this.props.field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
