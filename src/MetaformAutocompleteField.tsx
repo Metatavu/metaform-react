@@ -9,9 +9,8 @@ interface Props {
   field: MetaformField;
   fieldId: string;
   fieldLabelId: string;
-  formReadOnly: boolean;
-  value: FieldValue;
-  onValueChange: (value: FieldValue) => void;
+  formReadOnly: boolean; //TODO: implement
+  value: FieldValue; //TODO: implement
   renderAutocomplete: (field: MetaformField) => JSX.Element;
   onFocus: () => void;
 }

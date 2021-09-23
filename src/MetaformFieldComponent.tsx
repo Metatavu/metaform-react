@@ -227,7 +227,6 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   fieldId={ this.getFieldId() }
                   renderAutocomplete={ renderAutocomplete }
                   field={ this.props.field }
-                  onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
