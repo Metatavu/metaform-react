@@ -9,9 +9,9 @@ interface Props {
   field: MetaformField;
   fieldId: string;
   fieldLabelId: string;
-  formReadOnly: boolean; //TODO: implement
-  value: FieldValue; //TODO: implement
-  renderAutocomplete: (field: MetaformField) => JSX.Element;
+  formReadOnly: boolean;
+  value: FieldValue;
+  renderAutocomplete: (field: MetaformField, formReadOnly: boolean, value: FieldValue) => JSX.Element;
   onFocus: () => void;
 }
 
@@ -42,8 +42,13 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
    * Component render method
    */
   public render() {
-    const { field, renderAutocomplete } = this.props;
-    return renderAutocomplete(field);
-  }
+    const {
+      field,
+      formReadOnly,
+      value,
+      renderAutocomplete
+    } = this.props;
 
+    return renderAutocomplete(field, formReadOnly, value);
+  }
 }

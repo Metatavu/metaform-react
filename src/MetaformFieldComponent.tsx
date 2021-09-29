@@ -39,7 +39,7 @@ interface Props {
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
-  renderAutocomplete: (field: MetaformField) => JSX.Element;
+  renderAutocomplete: (field: MetaformField, formReadOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   fileShowButtonText: string;
   fileDeleteButtonText: string;
