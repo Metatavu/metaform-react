@@ -271,8 +271,10 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * Event handler for add button click
    */
   private onAddRowButtonClick = () => {
+    console.log(this.getRowValues())
     const rowValues = this.getRowValues();
     rowValues.push({});
+    console.log(rowValues)
     this.props.onValueChange(rowValues);
   }
 

@@ -110,11 +110,13 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * Renders field title
    */
   private renderTitle = () => {
-    if (!this.props.field.title) {
+    const { field } = this.props;
+
+    if (!field.title) {
       return null;
     }
 
-    const title = `${this.props.field.title}` + (this.props.field.required ? " *" : "");
+    const title = `${field.title}` + (field.required ? " *" : "");
 
     return (
       <div className="metaform-field-label-container"> 
@@ -127,23 +129,40 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * Renders field's input
    */
   private renderInput = () => {
-    switch (this.props.field.type) {
+    const {
+      field,
+      formReadOnly,
+      renderIcon,
+      validationErrors,
+      onSubmit,
+      setAutocompleteOptions,
+      onFileDelete,
+      onFileShow,
+      fileDeleteButtonText,
+      fileShowButtonText,
+      renderSlider,
+      datePicker,
+      datetimePicker,
+      strings
+    } = this.props;
+
+    switch (field.type) {
       case MetaformFieldType.Text:
         return  <MetaformTextFieldComponent
-                  formReadOnly={ this.props.formReadOnly }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field } onValueChange={ this.onValueChange }
+                  field={ field } onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                   getFieldValue={ this.getFieldValue }
                 />;
       case MetaformFieldType.Memo:
         return  <MetaformMemoComponent
-                  formReadOnly={ this.props.formReadOnly }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
@@ -151,42 +170,42 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                 />;
       case MetaformFieldType.Radio:
         return  <MetaformRadioFieldComponent
-                  renderIcon={ this.props.renderIcon }
-                  formReadOnly={ this.props.formReadOnly }
+                  renderIcon={ renderIcon }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
       case MetaformFieldType.Select:
         return  <MetaformSelectFieldComponent
-                  formReadOnly={ this.props.formReadOnly }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
       case MetaformFieldType.Submit:
         return  <MetaformSubmitFieldComponent
-                  validationErrors={ this.props.validationErrors }
-                  formReadOnly={ this.props.formReadOnly }
+                  validationErrors={ validationErrors }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
-                  onClick={ this.props.onSubmit }
+                  field={ field }
+                  onClick={ onSubmit }
                   value={ this.getFieldValue() }
                 />;
       case MetaformFieldType.Boolean:
         return  <MetaformBooleanFieldComponent
-                  renderIcon={ this.props.renderIcon }
-                  formReadOnly={ this.props.formReadOnly }
+                  renderIcon={ renderIcon }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
@@ -195,72 +214,72 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
         return  <MetaformHtmlComponent
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   getFieldValue={ this.getFieldValue }
                 />;
       case MetaformFieldType.Email:
         return  <MetaformEmailFieldComponent
-                  formReadOnly={ this.props.formReadOnly }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
       case MetaformFieldType.Url:
         return  <MetaformUrlFieldComponent
-                  formReadOnly={ this.props.formReadOnly }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
       case MetaformFieldType.Autocomplete:
         return  <MetaformAutocompleteFieldComponent
-                  setAutocompleteOptions={ this.props.setAutocompleteOptions }
-                  formReadOnly={ this.props.formReadOnly }
+                  setAutocompleteOptions={ setAutocompleteOptions }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
       case MetaformFieldType.Hidden:
         return  <MetaformHiddenFieldComponent
-                  formReadOnly={ this.props.formReadOnly }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
       case MetaformFieldType.Files:
         return  <MetaformFilesFieldComponent
-                  formReadOnly={ this.props.formReadOnly }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onFileUpload={ this.onFileUpload }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  onFileDelete={ this.props.onFileDelete }
-                  onFileShow={ this.props.onFileShow }
-                  deleteButtonText={ this.props.fileDeleteButtonText }
-                  showButtonText={ this.props.fileShowButtonText }
+                  onFileDelete={ onFileDelete }
+                  onFileShow={ onFileShow }
+                  deleteButtonText={ fileDeleteButtonText }
+                  showButtonText={ fileShowButtonText }
                 />;
       case MetaformFieldType.Date:
         return  <MetaformDateFieldComponent
-                  datePicker={ this.props.datePicker }
-                  formReadOnly={ this.props.formReadOnly }
+                  datePicker={ datePicker }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
@@ -268,11 +287,11 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                 />;
       case MetaformFieldType.DateTime:
         return  <MetaformDateTimeFieldComponent
-                  datetimePicker={ this.props.datetimePicker }
-                  formReadOnly={ this.props.formReadOnly }
+                  datetimePicker={ datetimePicker }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
@@ -280,48 +299,48 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                 />;
       case MetaformFieldType.Number:
         return  <MetaformNumberFieldComponent
-                  formReadOnly={ this.props.formReadOnly }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
+                  field={ field }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
       case MetaformFieldType.Slider:
         return <MetaformSliderFieldComponent
-                 renderSlider={ this.props.renderSlider }
-                 formReadOnly={ this.props.formReadOnly }
-                 fieldLabelId={ this.getFieldLabelId() }
-                 fieldId={ this.getFieldId() }
-                 field={ this.props.field }
-                 onValueChange={ this.onValueChange }
-                 value={ this.getFieldValue() }
-                 onFocus={ this.onFocus }
-                 getFieldValue={ this.getFieldValue }
-               />
+                renderSlider={ renderSlider }
+                formReadOnly={ formReadOnly }
+                fieldLabelId={ this.getFieldLabelId() }
+                fieldId={ this.getFieldId() }
+                field={ field }
+                onValueChange={ this.onValueChange }
+                value={ this.getFieldValue() }
+                onFocus={ this.onFocus }
+                getFieldValue={ this.getFieldValue }
+              />
       case MetaformFieldType.Checklist:
         return <MetaformChecklistFieldComponent
-                  formReadOnly={ this.props.formReadOnly }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
-                  renderIcon={ this.props.renderIcon }
+                  field={ field }
+                  renderIcon={ renderIcon }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-               />
+              />
       case MetaformFieldType.Table:
         return  <MetaformTableFieldComponent
-                  formReadOnly={ this.props.formReadOnly }
+                  formReadOnly={ formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
-                  field={ this.props.field }
-                  strings={ this.props.strings }
+                  field={ field }
+                  strings={ strings }
                   onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
-                  renderIcon={ this.props.renderIcon }
+                  renderIcon={ renderIcon }
                 />;
       default:
         return <div style={{ color: "red" }}> Unknown field type { this.props.field.type } </div>;
