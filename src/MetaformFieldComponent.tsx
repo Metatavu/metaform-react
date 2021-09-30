@@ -368,13 +368,15 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * Renders field help
    */
   private renderHelp = () => {
-    if (!this.props.field.help) {
+    const { field } = this.props;
+
+    if (!field.help) {
       return null;
     }
 
     return (
       <div className="metaform-field-help-container"> 
-        <small className="metaform-field-help"> { this.props.field.help } </small> 
+        <small className="metaform-field-help"> { field.help } </small> 
       </div>
     ) 
   }
@@ -383,7 +385,9 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * Returns field's id
    */
   private getFieldId = () => {
-    return `${this.props.metaformId}-field-${this.props.field.name}`;
+    const { metaformId, field } = this.props;
+
+    return `${metaformId}-field-${field.name}`;
   }
 
   /**
@@ -399,13 +403,15 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * @returns field's value
    */
   private getFieldValue = (): FieldValue => {
-    if (!this.props.field.name) {
+    const { field } = this.props;
+
+    if (!field.name) {
       return null;
     }
 
-    const result = this.props.getFieldValue(this.props.field.name);
-    if (!result && this.props.field._default) {
-      return this.props.field._default;
+    const result = this.props.getFieldValue(field.name);
+    if (!result && field._default) {
+      return field._default;
     }
 
     return result;
@@ -415,11 +421,13 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * Event handler for field value change
    */
   private onValueChange = (value: FieldValue) => {
-    if (!this.props.field.name) {
+    const { field, setFieldValue } = this.props;
+
+    if (!field.name) {
       return null;
     }
 
-    this.props.setFieldValue(this.props.field.name, value);
+    setFieldValue(field.name, value);
   }
 
   /**
@@ -431,19 +439,21 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * @param uploadSingle boolean
    */
   private onFileUpload = (fieldName: string, files: FileList, path: string, maxFileSize?: number, uploadSingle?: boolean) => {
+    const { uploadFile } = this.props;
+
     if (uploadSingle) {
       const file = files[0];
       if (maxFileSize && file.size > maxFileSize) {
         throw new Error(`Couldn't upload the file because it exceeded the maximum file size of ${ maxFileSize }`);
       }
-      return this.props.uploadFile(fieldName, file, path);
+      return uploadFile(fieldName, file, path);
     } else {
       for (let i = 0; i < files.length; i++) {
         if (maxFileSize && files[i].size > maxFileSize) {
           throw new Error(`Couldn't upload the files because one of them exceeded the maximum file size of ${ maxFileSize }`);
         }
       }
-      this.props.uploadFile(fieldName, files, path);
+      uploadFile(fieldName, files, path);
     }
   }
 
