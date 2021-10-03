@@ -7,12 +7,8 @@ import { FieldValue, IconName, Strings, TableFieldValue, TableFieldRowValue, Tab
  */
 interface Props {
   field: MetaformField,
-  fieldId: string,
-  fieldLabelId: string,
   formReadOnly: boolean,
   value: FieldValue,
-  onValueChange: (value: FieldValue) => void,
-  onFocus: () => void,
   renderIcon: (icon: IconName, key: string) => ReactNode;
   strings: Strings;
 }
@@ -21,7 +17,7 @@ interface Props {
  * Component state
  */
 interface State {
-  
+  rowValues : TableFieldValue;
 }
 
 /**
@@ -37,7 +33,9 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = { };
+    this.state = {
+      rowValues : []
+    };
   }
 
   /**
@@ -68,13 +66,12 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    */
   private renderHeader = () => {
     const { field } = this.props;
-
     const columns = field.columns || [];
     
     return (
       <thead>
         <tr>
-          { columns.map(this.renderHeaderColumn) }
+          { columns.map((column : MetaformTableColumn) => this.renderHeaderColumn(column)) }
         </tr>
       </thead>
     );
@@ -85,17 +82,15 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * 
    * @param column column
    */
-  private renderHeaderColumn = (column: MetaformTableColumn) => {
-    return (
-      <th style={{ textAlign: "left" }} key={ column.name }> { column.title || "" } </th>
-    );
-  }
+  private renderHeaderColumn = (column: MetaformTableColumn) => (
+    <th style={{ textAlign: "left" }} key={ column.name }> { column.title || "" } </th>
+  );
 
   /**
    * Renders table body
    */
   private renderBody = () => {
-    const rowValues = this.getRowValues();
+    const { rowValues } = this.state;
 
     return (
       <tbody>
@@ -110,7 +105,7 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * Renders an add row button
    */
   private renderAddRowButton = () => {
-    const { formReadOnly, field, strings, renderIcon } = this.props;
+    const { field, formReadOnly, strings, renderIcon } = this.props;
 
     if (field.addRows === false) {
       return null;
@@ -136,7 +131,6 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    */
   private renderRow = (rowNumber: number, rowValue: TableFieldRowValue) => {
     const { field } = this.props;
-
     const columns = field.columns || [];
 
     return (
@@ -193,7 +187,7 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * @param value value
    */
   private renderCellInputText = (rowNumber: number, column: MetaformTableColumn, value: TableFieldCellValue) => {
-    const { formReadOnly, field } = this.props;
+    const { field, formReadOnly } = this.props;
 
     return (
       <input 
@@ -214,8 +208,8 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * @param value value
    */
   private renderCellInputNumber = (rowNumber: number, column: MetaformTableColumn, value: TableFieldCellValue) => {
-    const { formReadOnly, field } = this.props;
-
+    const { field, formReadOnly } = this.props;
+    
     return (
       <input 
         value={ value || "" }
@@ -236,32 +230,11 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * @param value new value
    */
   private setTableFieldCellValue = (rowNumber: number, column: MetaformTableColumn, value: TableFieldCellValue) => {
-    const { onValueChange } = this.props;
-
-    const rowValues = this.getRowValues();
+    const { rowValues } = this.state;
     const rowValue = { ...rowValues[rowNumber] || {} };
     rowValue[column.name] = value;
     rowValues[rowNumber] = rowValue;
-    onValueChange(rowValues);
-  }
-
-  /**
-   * Returns deserialized row values
-   * 
-   * @returns deserialized row values
-   */
-  private getRowValues = (): TableFieldValue => {
-    const { formReadOnly, value } = this.props;
-
-    if (!value) {
-      return formReadOnly ? [] : [{}];
-    }
-
-    if (typeof value === "string") {
-      return JSON.parse(value as string);  
-    }
-
-    return value as TableFieldValue;
+    this.setState({rowValues: rowValues});
   }
 
   /**
@@ -286,11 +259,9 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * Event handler for add button click
    */
   private onAddRowButtonClick = () => {
-    const { onValueChange } = this.props;
-
-    const rowValues = this.getRowValues();
+    const { rowValues } = this.state;
     rowValues.push({});
-    onValueChange(rowValues);
+    this.setState({rowValues : rowValues})
   }
 
 }
