@@ -34,7 +34,7 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      rowValues : []
+      rowValues : [{}]
     };
   }
 
@@ -83,7 +83,7 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * @param column column
    */
   private renderHeaderColumn = (column: MetaformTableColumn) => (
-    <th style={{ textAlign: "left" }} key={ column.name }> { column.title || "" } </th>
+    <th style={{ textAlign: "left" }} key={ column.name }> { column.title } </th>
   );
 
   /**
