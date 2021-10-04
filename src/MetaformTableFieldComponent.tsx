@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from './generated/client/models';
-import { FieldValue, IconName, Strings, TableFieldValue, TableFieldRowValue, TableFieldCellValue } from './types';
+import React, { ReactNode } from "react";
+import { MetaformField, MetaformTableColumn, MetaformTableColumnType } from "./generated/client/models";
+import { FieldValue, IconName, Strings, TableFieldValue, TableFieldRowValue, TableFieldCellValue } from "./types";
 
 /**
  * Component props
@@ -261,7 +261,7 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
   private onAddRowButtonClick = () => {
     const { rowValues } = this.state;
     rowValues.push({});
-    this.setState({rowValues : rowValues})
+    this.setState({rowValues: rowValues})
   }
 
 }
