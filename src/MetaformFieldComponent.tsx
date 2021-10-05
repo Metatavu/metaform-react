@@ -337,6 +337,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   strings={ strings }
                   value={ this.getFieldValue() }
                   renderIcon={ renderIcon }
+                  onValueChange={ this.onValueChange }
                 />;
       default:
         return <div style={{ color: "red" }}> Unknown field type { this.props.field.type } </div>;
@@ -422,7 +423,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
     if (!field.name) {
       return null;
     }
-
+    
     setFieldValue(field.name, value);
   }
 

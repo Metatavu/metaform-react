@@ -11,6 +11,7 @@ interface Props {
   value: FieldValue,
   renderIcon: (icon: IconName, key: string) => ReactNode;
   strings: Strings;
+  onValueChange: (value: FieldValue) => void;
 }
 
 /**
@@ -34,7 +35,7 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      rowValues : [{}]
+      rowValues : this.props.value as TableFieldValue || [{}]
     };
   }
 
@@ -71,7 +72,7 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
     return (
       <thead>
         <tr>
-          { columns.map((column : MetaformTableColumn) => this.renderHeaderColumn(column)) }
+          { columns.map(this.renderHeaderColumn) }
         </tr>
       </thead>
     );
@@ -95,7 +96,7 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
     return (
       <tbody>
         {
-          rowValues.map((rowValue: TableFieldRowValue, rowNumber: number) => this.renderRow(rowNumber, rowValue))
+          rowValues.map(this.renderRow)
         }
       </tbody>
     );
@@ -129,7 +130,7 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * @param rowNumber row number
    * @param rowValue row value
    */
-  private renderRow = (rowNumber: number, rowValue: TableFieldRowValue) => {
+  private renderRow = (rowValue: TableFieldRowValue, rowNumber: number) => {
     const { field } = this.props;
     const columns = field.columns || [];
 
@@ -230,11 +231,10 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * @param value new value
    */
   private setTableFieldCellValue = (rowNumber: number, column: MetaformTableColumn, value: TableFieldCellValue) => {
-    const { rowValues } = this.state;
-    const rowValue = { ...rowValues[rowNumber] || {} };
-    rowValue[column.name] = value;
-    rowValues[rowNumber] = rowValue;
-    this.setState({rowValues: rowValues});
+    const rowValues = [ ...this.state.rowValues ];
+
+    rowValues[rowNumber][column.name] = value;
+    this.onTableValueChange(rowValues);
   }
 
   /**
@@ -260,8 +260,21 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    */
   private onAddRowButtonClick = () => {
     const { rowValues } = this.state;
+
     rowValues.push({});
-    this.setState({rowValues: rowValues})
+    this.onTableValueChange(rowValues);
+  }
+
+  /**
+   * Sets draft and state data
+   * 
+   * @param rowValues row values
+   */
+  private onTableValueChange = (rowValues: TableFieldValue) => {
+    const { onValueChange } = this.props;
+
+    this.setState({rowValues: rowValues});
+    onValueChange(rowValues);
   }
 
 }
