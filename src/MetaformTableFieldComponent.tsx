@@ -83,9 +83,11 @@ export class MetaformTableFieldComponent extends React.Component<Props, State> {
    * 
    * @param column column
    */
-  private renderHeaderColumn = (column: MetaformTableColumn) => (
-    <th style={{ textAlign: "left" }} key={ column.name }> { column.title } </th>
-  );
+  private renderHeaderColumn = (column: MetaformTableColumn) => {
+    return (
+      <th style={{ textAlign: "left" }} key={ column.name }> { column.title } </th>
+    );
+  }
 
   /**
    * Renders table body
