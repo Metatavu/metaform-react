@@ -117,7 +117,7 @@ export class MetaformFilesFieldComponent extends React.Component<Props, State> {
       files: [
         {
           id: value as string,
-          secure: false
+          persisted: false
         }
       ]
     }

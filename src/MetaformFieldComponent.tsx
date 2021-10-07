@@ -11,12 +11,13 @@ import { MetaformBooleanFieldComponent } from './MetaformBooleanFieldComponent';
 import { MetaformHtmlComponent } from './MetaformHtmlComponent';
 import { MetaformEmailFieldComponent } from './MetaformEmailComponent';
 import { MetaformUrlFieldComponent } from './MetaformUrlField';
-import { MetaformAutocompleteFieldComponent, MetaformAutocompleteItem } from './MetaformAutocompleteField';
+import { MetaformAutocompleteFieldComponent } from './MetaformAutocompleteField';
 import { MetaformHiddenFieldComponent } from './MetaformHiddenFieldComponent';
 import { MetaformFilesFieldComponent } from './MetaformFilesFieldComponent';
 import { MetaformDateFieldComponent } from './MetaformDateFieldComponent';
 import { MetaformDateTimeFieldComponent } from './MetaformDateTimeFieldComponent';
 import { MetaformNumberFieldComponent } from './MetaformNumberFieldComponent'; 
+import { MetaformSliderFieldComponent } from './MetaformSliderFieldComponent'; 
 import { MetaformTableFieldComponent } from "./MetaformTableFieldComponent"; 
 import { MetaformChecklistFieldComponent } from "./MetaformChecklistFieldComponent";
 import ContextUtils from './context-utils';
@@ -38,13 +39,14 @@ interface Props {
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   fileShowButtonText: string;
   fileDeleteButtonText: string;
   onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
-  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
+  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
 }
 
@@ -125,6 +127,8 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
    * Renders field's input
    */
   private renderInput = () => {
+    const { renderAutocomplete } = this.props;
+
     switch (this.props.field.type) {
       case MetaformFieldType.Text:
         return  <MetaformTextFieldComponent
@@ -218,12 +222,11 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                 />;
       case MetaformFieldType.Autocomplete:
         return  <MetaformAutocompleteFieldComponent
-                  setAutocompleteOptions={ this.props.setAutocompleteOptions }
                   formReadOnly={ this.props.formReadOnly }
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
+                  renderAutocomplete={ renderAutocomplete }
                   field={ this.props.field }
-                  onValueChange={ this.onValueChange }
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
@@ -286,6 +289,18 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   value={ this.getFieldValue() }
                   onFocus={ this.onFocus }
                 />;
+      case MetaformFieldType.Slider:
+        return <MetaformSliderFieldComponent
+                 renderSlider={ this.props.renderSlider }
+                 formReadOnly={ this.props.formReadOnly }
+                 fieldLabelId={ this.getFieldLabelId() }
+                 fieldId={ this.getFieldId() }
+                 field={ this.props.field }
+                 onValueChange={ this.onValueChange }
+                 value={ this.getFieldValue() }
+                 onFocus={ this.onFocus }
+                 getFieldValue={ this.getFieldValue }
+               />
       case MetaformFieldType.Checklist:
         return <MetaformChecklistFieldComponent
                   formReadOnly={ this.props.formReadOnly }

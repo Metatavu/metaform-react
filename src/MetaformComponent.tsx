@@ -2,10 +2,10 @@ import React, { ReactNode } from 'react';
 import { Metaform, MetaformField, MetaformFieldType } from './generated/client/models';
 import { MetaformSectionComponent } from './MetaformSectionComponent';
 import { FieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
-import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
 import * as EmailValidator from 'email-validator';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
 import ContextUtils from './context-utils';
+import deepEqual from "fast-deep-equal";
 
 /**
  * Component props
@@ -22,12 +22,14 @@ interface Props {
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
-  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
+  renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
   onFileShow: (fieldName: string, value: FileFieldValueItem) => void;
   onFileDelete: (fieldName: string, value: FileFieldValueItem) => void;
+  onValidationErrorsChange?: (validationErrors: ValidationErrors) => void;
 }
 
 /**
@@ -68,7 +70,9 @@ export class MetaformComponent extends React.Component<Props, State> {
    * Component render method
    */
   public render() {
-    const sections = this.props.form.sections || [];
+    const { form, renderAutocomplete } = this.props;
+
+    const sections = form.sections || [];
 
     return (
       <div className="metaform">
@@ -86,10 +90,11 @@ export class MetaformComponent extends React.Component<Props, State> {
                 strings={ this.props.strings }
                 renderBeforeField={this.props.renderBeforeField}
                 datePicker={ this.props.datePicker } 
-                datetimePicker={ this.props.datetimePicker } 
-                setAutocompleteOptions={ this.props.setAutocompleteOptions } 
+                datetimePicker={ this.props.datetimePicker }
+                renderAutocomplete={ renderAutocomplete } 
                 uploadFile={ this.props.uploadFile }
                 renderIcon={ this.props.renderIcon } 
+                renderSlider={ this.props.renderSlider }
                 getFieldValue={ this.props.getFieldValue } 
                 setFieldValue={ this.setFieldValue } 
                 metaformId={ this.state.metaformId } 
@@ -129,7 +134,7 @@ export class MetaformComponent extends React.Component<Props, State> {
    * Validates all visible form fields
    */
   private validateFields = () => {
-    const { form, contexts, getFieldValue } = this.props;
+    const { form, contexts, getFieldValue, onValidationErrorsChange } = this.props;
     const validationErrors: ValidationErrors = {};
     
     (form.sections || [])
@@ -152,9 +157,15 @@ export class MetaformComponent extends React.Component<Props, State> {
           });
       });
 
-    this.setState({
-      validationErrors: validationErrors
-    });
+    if (!deepEqual(validationErrors, this.state.validationErrors)) {
+      this.setState({
+        validationErrors: validationErrors
+      });
+
+      if (onValidationErrorsChange) {
+        onValidationErrorsChange(validationErrors);
+      }
+    }
   }
 
   /**

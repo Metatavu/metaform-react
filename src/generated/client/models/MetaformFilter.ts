@@ -16,46 +16,46 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface MetaformScript
+ * @interface MetaformFilter
  */
-export interface MetaformScript {
+export interface MetaformFilter {
     /**
      * 
      * @type {string}
-     * @memberof MetaformScript
+     * @memberof MetaformFilter
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MetaformFilter
      */
     name: string;
     /**
-     * 
-     * @type {string}
-     * @memberof MetaformScript
+     * Predefined list replies filter. Format is field:value
+     * @type {Array<string>}
+     * @memberof MetaformFilter
      */
-    language: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MetaformScript
-     */
-    content: string;
+    fields?: Array<string>;
 }
 
-export function MetaformScriptFromJSON(json: any): MetaformScript {
-    return MetaformScriptFromJSONTyped(json, false);
+export function MetaformFilterFromJSON(json: any): MetaformFilter {
+    return MetaformFilterFromJSONTyped(json, false);
 }
 
-export function MetaformScriptFromJSONTyped(json: any, ignoreDiscriminator: boolean): MetaformScript {
+export function MetaformFilterFromJSONTyped(json: any, ignoreDiscriminator: boolean): MetaformFilter {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
+        'id': json['id'],
         'name': json['name'],
-        'language': json['language'],
-        'content': json['content'],
+        'fields': !exists(json, 'fields') ? undefined : json['fields'],
     };
 }
 
-export function MetaformScriptToJSON(value?: MetaformScript | null): any {
+export function MetaformFilterToJSON(value?: MetaformFilter | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -64,9 +64,9 @@ export function MetaformScriptToJSON(value?: MetaformScript | null): any {
     }
     return {
         
+        'id': value.id,
         'name': value.name,
-        'language': value.language,
-        'content': value.content,
+        'fields': value.fields,
     };
 }
 

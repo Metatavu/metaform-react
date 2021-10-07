@@ -16,39 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface NotFound
+ * @interface MetaformFieldSourceCodeServer
  */
-export interface NotFound {
+export interface MetaformFieldSourceCodeServer {
     /**
-     * 
-     * @type {number}
-     * @memberof NotFound
-     */
-    code?: number;
-    /**
-     * 
+     * Attribute name
      * @type {string}
-     * @memberof NotFound
+     * @memberof MetaformFieldSourceCodeServer
      */
-    message?: string;
+    attributeName: string;
 }
 
-export function NotFoundFromJSON(json: any): NotFound {
-    return NotFoundFromJSONTyped(json, false);
+export function MetaformFieldSourceCodeServerFromJSON(json: any): MetaformFieldSourceCodeServer {
+    return MetaformFieldSourceCodeServerFromJSONTyped(json, false);
 }
 
-export function NotFoundFromJSONTyped(json: any, ignoreDiscriminator: boolean): NotFound {
+export function MetaformFieldSourceCodeServerFromJSONTyped(json: any, ignoreDiscriminator: boolean): MetaformFieldSourceCodeServer {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'code': !exists(json, 'code') ? undefined : json['code'],
-        'message': !exists(json, 'message') ? undefined : json['message'],
+        'attributeName': json['attributeName'],
     };
 }
 
-export function NotFoundToJSON(value?: NotFound | null): any {
+export function MetaformFieldSourceCodeServerToJSON(value?: MetaformFieldSourceCodeServer | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,8 +50,7 @@ export function NotFoundToJSON(value?: NotFound | null): any {
     }
     return {
         
-        'code': value.code,
-        'message': value.message,
+        'attributeName': value.attributeName,
     };
 }
 
