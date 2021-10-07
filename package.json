@@ -13,7 +13,8 @@
     "typescript": "3.5.3"
   },
   "scripts": {
-    "build": "tsc --outDir dist/",
+    "build": "tsc --outDir dist/ --noEmitOnError",
+    "watch": "tsc --watch --outDir dist/",
     "build-client": "./node_modules/@openapitools/openapi-generator-cli/bin/openapi-generator generate -i metaform-api-spec/swagger.yaml -o ./src/generated/client -c generator-config.json -g typescript-fetch"
   },
   "eslintConfig": {
