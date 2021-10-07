@@ -11,7 +11,7 @@ interface Props {
   fieldLabelId: string;
   formReadOnly: boolean;
   value: FieldValue;
-  renderAutocomplete: (field: MetaformField, formReadOnly: boolean, value: FieldValue) => JSX.Element;
+  renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   onFocus: () => void;
 }
 
