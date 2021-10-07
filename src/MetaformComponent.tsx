@@ -22,7 +22,7 @@ interface Props {
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
-  renderAutocomplete: (field: MetaformField, formReadOnly: boolean, value: FieldValue) => JSX.Element;
+  renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
