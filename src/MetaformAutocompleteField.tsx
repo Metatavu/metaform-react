@@ -49,6 +49,6 @@ export class MetaformAutocompleteFieldComponent extends React.Component<Props, S
       renderAutocomplete
     } = this.props;
 
-    return renderAutocomplete(field, formReadOnly, value);
+    return renderAutocomplete(field, formReadOnly || field.readOnly, value);
   }
 }
