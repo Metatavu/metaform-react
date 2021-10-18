@@ -3,7 +3,6 @@ import { MetaformSection, MetaformField } from './generated/client/models';
 import { MetaformFieldComponent } from './MetaformFieldComponent';
 import { FieldValue, FileFieldValue, FileFieldValueItem, IconName, Strings, ValidationErrors, ValidationStatus } from './types';
 import VisibileIfEvaluator from './VisibleIfEvaluator';
-import { MetaformAutocompleteItem } from './MetaformAutocompleteField';
 
 /**
  * Component props
@@ -23,8 +22,8 @@ interface Props {
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
   datetimePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
+  renderAutocomplete: (field: MetaformField, readOnly: boolean, value: FieldValue) => JSX.Element;
   uploadFile: (fieldName: string, file: FileList | File, path: string) => void;
-  setAutocompleteOptions: (path: string, input?: string) => Promise<string[] | MetaformAutocompleteItem[]>;
   renderIcon: (icon: IconName, key: string) => ReactNode;
   renderSlider?: (fieldName: string, readOnly: boolean) => JSX.Element | null;
   onSubmit: (source: MetaformField) => void;
@@ -84,6 +83,8 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
   }
 
   private renderFields = () => {
+    const { renderAutocomplete } = this.props;
+
     return (
       <fieldset>
         {
@@ -93,8 +94,8 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
                 validationErrors={ this.props.validationErrors }
                 datePicker={ this.props.datePicker } 
                 datetimePicker={ this.props.datetimePicker }
+                renderAutocomplete={ renderAutocomplete }
                 renderBeforeField={this.props.renderBeforeField}
-                setAutocompleteOptions={ this.props.setAutocompleteOptions } 
                 uploadFile={ this.props.uploadFile }
                 renderIcon={ this.props.renderIcon } 
                 renderSlider={ this.props.renderSlider }
