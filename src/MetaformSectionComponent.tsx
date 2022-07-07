@@ -18,6 +18,7 @@ interface Props {
   showRequiredFieldsMissingError?: boolean;
   strings: Strings;
   validationErrors: ValidationErrors;
+  accessTokenNotValid?: boolean;
   getFieldValue: (fieldName: string) => FieldValue;
   setFieldValue: (fieldName: string, fieldValue: FieldValue) => void;
   datePicker: (fieldName: string, onChange: (date: Date) => void) => JSX.Element;
@@ -102,6 +103,7 @@ export class MetaformSectionComponent extends React.Component<Props, State> {
                 getFieldValue={ this.props.getFieldValue } 
                 setFieldValue={ this.props.setFieldValue } 
                 formReadOnly={ this.props.formReadOnly } 
+                accessTokenNotValid={ this.props.accessTokenNotValid }
                 field={ field } 
                 strings={ this.props.strings }
                 metaformId={ this.props.metaformId } 

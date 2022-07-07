@@ -33,6 +33,7 @@ interface Props {
   contexts?: string[];
   requiredFieldsMissingError?: string;
   showRequiredFieldsMissingError?: boolean;
+  accessTokenNotValid?: boolean;
   strings: Strings;
   validationErrors: ValidationErrors;
   getFieldValue: (fieldName: string) => FieldValue;
@@ -143,7 +144,8 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
       fileDeleteButtonText,
       fileShowButtonText,
       renderSlider,
-      strings
+      strings,
+      accessTokenNotValid
     } = this.props;
 
     switch (this.props.field.type) {
@@ -196,6 +198,7 @@ export class MetaformFieldComponent extends React.Component<Props, State> {
                   fieldLabelId={ this.getFieldLabelId() }
                   fieldId={ this.getFieldId() }
                   field={ field }
+                  accessTokenNotValid={ accessTokenNotValid }
                   onClick={ onSubmit }
                   value={ this.getFieldValue() }
                 />;

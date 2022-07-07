@@ -10,6 +10,7 @@ interface Props {
   fieldId: string;
   fieldLabelId: string;
   formReadOnly: boolean;
+  accessTokenNotValid?: boolean;
   value: FieldValue;
   validationErrors: ValidationErrors;
   onClick: (source: MetaformField) => void;
@@ -44,14 +45,14 @@ export class MetaformSubmitFieldComponent extends React.Component<Props, State> 
    * Component render method
    */
   public render() {
-    const { field, validationErrors } = this.props;
+    const { field, validationErrors, accessTokenNotValid } = this.props;
 
     if (!field.name) {
       return null;
     }
 
     const hasValidationErrors = Object.keys(validationErrors).length > 0;
-    const disabled = hasValidationErrors || this.props.formReadOnly || this.props.field.readonly;
+    const disabled = hasValidationErrors || this.props.formReadOnly || this.props.field.readonly || accessTokenNotValid;
     const style: CSSProperties = {};
 
     if (disabled) {
