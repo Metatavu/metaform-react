@@ -13,6 +13,7 @@ import deepEqual from "fast-deep-equal";
 interface Props {
   form: Metaform;
   formReadOnly: boolean;
+  accessTokenNotValid?: boolean;
   renderBeforeField?: (fieldName?: string) => JSX.Element | void;
   contexts?: string[];
   strings: Strings;
@@ -99,7 +100,8 @@ export class MetaformComponent extends React.Component<Props, State> {
                 setFieldValue={ this.setFieldValue } 
                 metaformId={ this.state.metaformId } 
                 sectionId={ sectionId } 
-                formReadOnly={ this.props.formReadOnly } 
+                formReadOnly={ this.props.formReadOnly }
+                accessTokenNotValid={ this.props.accessTokenNotValid }
                 section={ section }
                 contexts={ this.props.contexts }
                 onSubmit={ this.props.onSubmit }
